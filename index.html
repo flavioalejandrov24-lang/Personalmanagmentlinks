@@ -62,6 +62,7 @@
             font-weight: 900;
             font-style: italic;
             box-shadow: 0 10px 25px rgba(234, 88, 12, 0.3);
+            cursor: pointer;
         }
 
         .nav-title {
@@ -482,7 +483,12 @@
     <nav>
         <div class="nav-container">
             <div class="nav-logo">
-                <div class="logo-icon">LA</div>
+                <!-- ESTA ES LA MODIFICACION NUEVA DEL LOGO, AVER 👀 -->
+                <div id="logoIcon" class="logo-icon" role="button" tabindex="0" aria-label="Volver">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                  </svg>
+                </div>
                 <h1 class="nav-title">Links Administrator</h1>
             </div>
             <div class="nav-buttons">
@@ -610,7 +616,7 @@
         // Inicialización
         async function init() {
             const SUPABASE_URL = 'https://nhqwwqfhazpzlksiftmd.supabase.co';
-            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ocXd3cWZoYXpwemxrc2lmdG1kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc1ODExMDYsImV4cCI6MjA4MzE1NzEwNn0.5GbOjyTy9Xa9_oB71pdNfiEdRtjxbixQ6khFzl4jn8o';
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ocXd3cWZoYXpwemxrc2lmdG1kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc1ODExMDYsImV4cCI6MjA4MzE[...]'
 
             if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
                 alert('ERROR: No se encontró la configuración de Supabase');
@@ -628,6 +634,15 @@
         function setupEventListeners() {
             navHome.addEventListener('click', () => switchView('home'));
             navList.addEventListener('click', () => switchView('list'));
+
+            const logoIcon = document.getElementById('logoIcon');
+            if (logoIcon) {
+                logoIcon.addEventListener('click', () => window.history.back());
+                logoIcon.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.history.back(); }
+                });
+            }
+
             btnAddLink.addEventListener('click', () => {
                 resetForm();
                 switchView('home');

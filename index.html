@@ -103,7 +103,6 @@
             background: rgba(234, 88, 12, 0.1);
         }
 
-        /* Menú Hamburguesa */
         .hamburger-btn {
             width: 40px;
             height: 40px;
@@ -284,6 +283,34 @@
             width: 40px;
             height: 40px;
             margin-bottom: 0.5rem;
+        }
+
+        .remove-image-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(239, 68, 68, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .remove-image-btn:hover {
+            background: #ef4444;
+            transform: scale(1.1);
+        }
+
+        .remove-image-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: white;
         }
 
         .form-group {
@@ -600,6 +627,9 @@
     </style>
 </head>
 <body>
+    <!-- ============================================ -->
+    <!-- NAVEGACIÓN PRINCIPAL -->
+    <!-- ============================================ -->
     <nav>
         <div class="nav-container">
             <div class="nav-logo">
@@ -656,7 +686,9 @@
     </nav>
 
     <div class="container">
-        <!-- Vista del Formulario -->
+        <!-- ============================================ -->
+        <!-- VISTA: FORMULARIO (CREAR/EDITAR) -->
+        <!-- ============================================ -->
         <div id="homeView" class="view">
             <div class="form-container">
                 <h2 class="form-title" id="formTitle">
@@ -678,6 +710,12 @@
                             <p style="font-weight: 700; font-size: 0.875rem;">Seleccionar de Galería</p>
                         </div>
                         <img id="imagePreview" style="display: none;" alt="Preview">
+                        <button type="button" class="remove-image-btn" id="removeImageBtn" style="display: none;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"/>
+                                <line x1="6" y1="6" x2="18" y2="18"/>
+                            </svg>
+                        </button>
                     </div>
                     <input type="file" id="fileInput" accept="image/*" style="display: none;">
 
@@ -720,11 +758,13 @@
             </div>
         </div>
 
-        <!-- Vista Catálogo Axl -->
+        <!-- ============================================ -->
+        <!-- VISTA: CATÁLOGO AXL -->
+        <!-- ============================================ -->
         <div id="axlView" class="view active">
             <div class="catalog-header">
                 <h2 class="catalog-title">Catálogo <span>Axl</span></h2>
-                <button class="btn-add" id="btnAddAxl">
+                <button class="btn-add" data-category="axl">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="12" y1="5" x2="12" y2="19"/>
                         <line x1="5" y1="12" x2="19" y2="12"/>
@@ -737,11 +777,13 @@
             </div>
         </div>
 
-        <!-- Vista Links Frecuentes -->
+        <!-- ============================================ -->
+        <!-- VISTA: LINKS FRECUENTES -->
+        <!-- ============================================ -->
         <div id="frecuentesView" class="view">
             <div class="catalog-header">
                 <h2 class="catalog-title">Links <span>Frecuentes</span></h2>
-                <button class="btn-add" id="btnAddFrecuentes">
+                <button class="btn-add" data-category="frecuentes">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="12" y1="5" x2="12" y2="19"/>
                         <line x1="5" y1="12" x2="19" y2="12"/>
@@ -754,11 +796,13 @@
             </div>
         </div>
 
-        <!-- Vista Varios Links -->
+        <!-- ============================================ -->
+        <!-- VISTA: VARIOS LINKS -->
+        <!-- ============================================ -->
         <div id="variosView" class="view">
             <div class="catalog-header">
                 <h2 class="catalog-title">Varios <span>Links</span></h2>
-                <button class="btn-add" id="btnAddVarios">
+                <button class="btn-add" data-category="varios">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="12" y1="5" x2="12" y2="19"/>
                         <line x1="5" y1="12" x2="19" y2="12"/>
@@ -775,47 +819,76 @@
     <div class="footer">DARK ENGINE V3 | PERSONAL</div>
 
     <script>
-        // Variables globales
+        // ============================================
+        // VARIABLES GLOBALES
+        // ============================================
         let supabaseClient;
-        let linksAxl = [];
-        let linksFrecuentes = [];
-        let linksVarios = [];
+        const linksData = {
+            axl: [],
+            frecuentes: [],
+            varios: []
+        };
         let isEditing = false;
         let editingId = null;
         let editingCategory = null;
         let currentImageFile = null;
+        let currentImageUrl = null; // Para mantener la URL al editar
         let currentView = 'axl';
 
-        // Elementos del DOM
-        const homeView = document.getElementById('homeView');
-        const axlView = document.getElementById('axlView');
-        const frecuentesView = document.getElementById('frecuentesView');
-        const variosView = document.getElementById('variosView');
-        const navHome = document.getElementById('navHome');
-        const hamburgerBtn = document.getElementById('hamburgerBtn');
-        const menuDropdown = document.getElementById('menuDropdown');
-        const linkForm = document.getElementById('linkForm');
-        const imageUpload = document.getElementById('imageUpload');
-        const fileInput = document.getElementById('fileInput');
-        const imagePreview = document.getElementById('imagePreview');
-        const imagePlaceholder = document.getElementById('imagePlaceholder');
-        const categorySelect = document.getElementById('categorySelect');
-        const titleInput = document.getElementById('titleInput');
-        const urlInput = document.getElementById('urlInput');
-        const btnCancel = document.getElementById('btnCancel');
-        const btnAddAxl = document.getElementById('btnAddAxl');
-        const btnAddFrecuentes = document.getElementById('btnAddFrecuentes');
-        const btnAddVarios = document.getElementById('btnAddVarios');
-        const axlContainer = document.getElementById('axlContainer');
-        const frecuentesContainer = document.getElementById('frecuentesContainer');
-        const variosContainer = document.getElementById('variosContainer');
-        const formTitle = document.getElementById('formTitle');
-        const btnSubmitText = document.getElementById('btnSubmitText');
+        // ============================================
+        // ELEMENTOS DEL DOM
+        // ============================================
+        const elements = {
+            views: {
+                home: document.getElementById('homeView'),
+                axl: document.getElementById('axlView'),
+                frecuentes: document.getElementById('frecuentesView'),
+                varios: document.getElementById('variosView')
+            },
+            containers: {
+                axl: document.getElementById('axlContainer'),
+                frecuentes: document.getElementById('frecuentesContainer'),
+                varios: document.getElementById('variosContainer')
+            },
+            nav: {
+                home: document.getElementById('navHome'),
+                hamburger: document.getElementById('hamburgerBtn'),
+                menu: document.getElementById('menuDropdown'),
+                logo: document.getElementById('logoIcon')
+            },
+            form: {
+                element: document.getElementById('linkForm'),
+                title: document.getElementById('formTitle'),
+                submitText: document.getElementById('btnSubmitText'),
+                category: document.getElementById('categorySelect'),
+                titleInput: document.getElementById('titleInput'),
+                url: document.getElementById('urlInput'),
+                cancel: document.getElementById('btnCancel')
+            },
+            image: {
+                upload: document.getElementById('imageUpload'),
+                input: document.getElementById('fileInput'),
+                preview: document.getElementById('imagePreview'),
+                placeholder: document.getElementById('imagePlaceholder'),
+                removeBtn: document.getElementById('removeImageBtn')
+            }
+        };
 
-        // Inicialización
+        // ============================================
+        // CONFIGURACIÓN DE CATEGORÍAS
+        // ============================================
+        const categories = {
+            axl: { title: 'Catálogo Axl' },
+            frecuentes: { title: 'Links Frecuentes' },
+            varios: { title: 'Varios Links' }
+        };
+
+        // ============================================
+        // INICIALIZACIÓN
+        // ============================================
         async function init() {
             const SUPABASE_URL = 'https://nhqwwqfhazpzlksiftmd.supabase.co';
-            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ocXd3cWZoYXpwemxrc2lmdG1kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc1ODExMDYsImV4cCI6MjA4MzE1NzEwNn0.5GbOjyTy9Xa9_oB71pdNfiEdRtjxbixQ6khFzl4jn8o'
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ocXd3cWZoYXpwemxrc2lmdG1kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc1ODExMDYsImV4cCI6MjA4MzE1NzEwNn0.5GbOjyTy9Xa9_oB71pdNfiEdRtjxbixQ6khFzl4jn8o';
 
             if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
                 alert('ERROR: No se encontró la configuración de Supabase');
@@ -823,113 +896,116 @@
             }
 
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
             await loadAllLinks();
             setupEventListeners();
-            switchView('axl'); // Siempre inicia en Catálogo Axl
+            switchView('axl');
         }
 
-        // Event Listeners
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
         function setupEventListeners() {
-            navHome.addEventListener('click', () => {
+            // Navegación principal
+            elements.nav.home.addEventListener('click', () => {
                 resetForm();
                 switchView('home');
             });
 
+            // Logo - volver atrás
+            elements.nav.logo.addEventListener('click', () => window.history.back());
+            elements.nav.logo.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') { 
+                    e.preventDefault(); 
+                    window.history.back(); 
+                }
+            });
+
             // Menú hamburguesa
-            hamburgerBtn.addEventListener('click', (e) => {
+            elements.nav.hamburger.addEventListener('click', (e) => {
                 e.stopPropagation();
-                hamburgerBtn.classList.toggle('active');
-                menuDropdown.classList.toggle('active');
+                elements.nav.hamburger.classList.toggle('active');
+                elements.nav.menu.classList.toggle('active');
             });
 
             // Cerrar menú al hacer clic fuera
             document.addEventListener('click', (e) => {
-                if (!hamburgerBtn.contains(e.target) && !menuDropdown.contains(e.target)) {
-                    hamburgerBtn.classList.remove('active');
-                    menuDropdown.classList.remove('active');
+                if (!elements.nav.hamburger.contains(e.target) && !elements.nav.menu.contains(e.target)) {
+                    elements.nav.hamburger.classList.remove('active');
+                    elements.nav.menu.classList.remove('active');
                 }
             });
 
-            // Items del menú
-            document.querySelectorAll('.menu-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    const view = item.getAttribute('data-view');
+            // Items del menú (delegación de eventos)
+            elements.nav.menu.addEventListener('click', (e) => {
+                const menuItem = e.target.closest('.menu-item');
+                if (menuItem) {
+                    const view = menuItem.getAttribute('data-view');
                     switchView(view);
-                    hamburgerBtn.classList.remove('active');
-                    menuDropdown.classList.remove('active');
-                });
+                    elements.nav.hamburger.classList.remove('active');
+                    elements.nav.menu.classList.remove('active');
+                }
             });
 
-            const logoIcon = document.getElementById('logoIcon');
-            if (logoIcon) {
-                logoIcon.addEventListener('click', () => window.history.back());
-                logoIcon.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') { 
-                        e.preventDefault(); 
-                        window.history.back(); 
-                    }
-                });
-            }
-
-            btnAddAxl.addEventListener('click', () => {
-                resetForm();
-                categorySelect.value = 'axl';
-                switchView('home');
+            // Botones "Agregar Link" (delegación de eventos)
+            document.addEventListener('click', (e) => {
+                const addBtn = e.target.closest('.btn-add');
+                if (addBtn) {
+                    const category = addBtn.getAttribute('data-category');
+                    openFormForCategory(category);
+                }
             });
 
-            btnAddFrecuentes.addEventListener('click', () => {
-                resetForm();
-                categorySelect.value = 'frecuentes';
-                switchView('home');
-            });
-
-            btnAddVarios.addEventListener('click', () => {
-                resetForm();
-                categorySelect.value = 'varios';
-                switchView('home');
-            });
-
-            btnCancel.addEventListener('click', () => {
+            // Formulario
+            elements.form.cancel.addEventListener('click', () => {
                 resetForm();
                 switchView(currentView);
             });
 
-            imageUpload.addEventListener('click', () => fileInput.click());
-            fileInput.addEventListener('change', handleImageChange);
-            linkForm.addEventListener('submit', handleSubmit);
+            // Imagen
+            elements.image.upload.addEventListener('click', (e) => {
+                if (e.target !== elements.image.removeBtn && !elements.image.removeBtn.contains(e.target)) {
+                    elements.image.input.click();
+                }
+            });
+            elements.image.input.addEventListener('change', handleImageChange);
+            elements.image.removeBtn.addEventListener('click', removeImage);
+
+            // Submit del formulario
+            elements.form.element.addEventListener('submit', handleSubmit);
         }
 
-        // Navegación entre vistas
+        // ============================================
+        // FUNCIONES DE NAVEGACIÓN
+        // ============================================
         function switchView(view) {
             currentView = view;
             
-            homeView.classList.remove('active');
-            axlView.classList.remove('active');
-            frecuentesView.classList.remove('active');
-            variosView.classList.remove('active');
+            // Ocultar todas las vistas
+            Object.values(elements.views).forEach(v => v.classList.remove('active'));
             
-            navHome.classList.remove('active');
-            document.querySelectorAll('.menu-item').forEach(item => {
-                item.classList.remove('active');
-            });
+            // Desactivar navegación
+            elements.nav.home.classList.remove('active');
+            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
 
+            // Activar vista correspondiente
             if (view === 'home') {
-                homeView.classList.add('active');
-                navHome.classList.add('active');
-            } else if (view === 'axl') {
-                axlView.classList.add('active');
-                document.querySelector('[data-view="axl"]').classList.add('active');
-            } else if (view === 'frecuentes') {
-                frecuentesView.classList.add('active');
-                document.querySelector('[data-view="frecuentes"]').classList.add('active');
-            } else if (view === 'varios') {
-                variosView.classList.add('active');
-                document.querySelector('[data-view="varios"]').classList.add('active');
+                elements.views.home.classList.add('active');
+                elements.nav.home.classList.add('active');
+            } else {
+                elements.views[view].classList.add('active');
+                document.querySelector(`[data-view="${view}"]`).classList.add('active');
             }
         }
 
-        // Manejo de imagen
+        function openFormForCategory(category) {
+            resetForm();
+            elements.form.category.value = category;
+            switchView('home');
+        }
+
+        // ============================================
+        // MANEJO DE IMÁGENES
+        // ============================================
         function handleImageChange(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -937,21 +1013,35 @@
             currentImageFile = file;
             const reader = new FileReader();
             reader.onloadend = () => {
-                imagePreview.src = reader.result;
-                imagePreview.style.display = 'block';
-                imagePlaceholder.style.display = 'none';
+                elements.image.preview.src = reader.result;
+                elements.image.preview.style.display = 'block';
+                elements.image.placeholder.style.display = 'none';
+                elements.image.removeBtn.style.display = 'flex';
             };
             reader.readAsDataURL(file);
         }
 
-        // Cargar todos los links
-        async function loadAllLinks() {
-            await loadLinks('axl');
-            await loadLinks('frecuentes');
-            await loadLinks('varios');
+        function removeImage(e) {
+            e.stopPropagation();
+            currentImageFile = null;
+            currentImageUrl = null;
+            elements.image.preview.style.display = 'none';
+            elements.image.placeholder.style.display = 'flex';
+            elements.image.removeBtn.style.display = 'none';
+            elements.image.input.value = '';
         }
 
-        // Cargar links por categoría
+        // ============================================
+        // CARGA DE DATOS
+        // ============================================
+        async function loadAllLinks() {
+            await Promise.all([
+                loadLinks('axl'),
+                loadLinks('frecuentes'),
+                loadLinks('varios')
+            ]);
+        }
+
         async function loadLinks(category) {
             try {
                 const tableName = `links_${category}`;
@@ -962,28 +1052,20 @@
 
                 if (error) throw error;
 
-                if (category === 'axl') {
-                    linksAxl = data || [];
-                    renderLinks('axl', axlContainer);
-                } else if (category === 'frecuentes') {
-                    linksFrecuentes = data || [];
-                    renderLinks('frecuentes', frecuentesContainer);
-                } else if (category === 'varios') {
-                    linksVarios = data || [];
-                    renderLinks('varios', variosContainer);
-                }
+                linksData[category] = data || [];
+                renderLinks(category);
             } catch (error) {
                 console.error(`Error cargando links de ${category}:`, error);
-                const container = category === 'axl' ? axlContainer : 
-                                category === 'frecuentes' ? frecuentesContainer : variosContainer;
-                container.innerHTML = '<div class="empty-state"><p>Error al cargar los links</p></div>';
+                elements.containers[category].innerHTML = '<div class="empty-state"><p>Error al cargar los links</p></div>';
             }
         }
 
-        // Renderizar lista de links
-        function renderLinks(category, container) {
-            const links = category === 'axl' ? linksAxl : 
-                         category === 'frecuentes' ? linksFrecuentes : linksVarios;
+        // ============================================
+        // RENDERIZADO DE LINKS
+        // ============================================
+        function renderLinks(category) {
+            const container = elements.containers[category];
+            const links = linksData[category];
 
             if (links.length === 0) {
                 container.innerHTML = '<div class="empty-state"><p>Tu galería está vacía.</p></div>';
@@ -994,50 +1076,69 @@
             grid.className = 'links-grid';
 
             links.forEach(link => {
-                const card = document.createElement('div');
-                card.className = 'link-card';
-                
-                card.innerHTML = `
-                    <div class="link-image">
-                        <img src="${link.image_url}" alt="${link.title || 'Link'}">
-                    </div>
-                    <div class="link-content">
-                        ${link.title ? `<h3 class="link-title">${link.title}</h3>` : ''}
-                        <div class="link-actions ${!link.title ? 'no-title' : ''}">
-                            <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="action-btn action-link">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                                    <polyline points="15 3 21 3 21 9"/>
-                                    <line x1="10" y1="14" x2="21" y2="3"/>
-                                </svg>
-                                Link
-                            </a>
-                            <button class="action-btn action-edit" onclick="editLink('${link.id}', '${category}')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                                </svg>
-                                Editar
-                            </button>
-                            <button class="action-btn action-delete" onclick="deleteLink('${link.id}', '${category}')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polyline points="3 6 5 6 21 6"/>
-                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                                </svg>
-                                Borrar
-                            </button>
-                        </div>
-                    </div>
-                `;
-                
-                grid.appendChild(card);
+                grid.appendChild(createLinkCard(link, category));
             });
 
             container.innerHTML = '';
             container.appendChild(grid);
         }
 
-        // Subir imagen a Supabase Storage
+        function createLinkCard(link, category) {
+            const card = document.createElement('div');
+            card.className = 'link-card';
+            
+            card.innerHTML = `
+                <div class="link-image">
+                    <img src="${link.image_url}" alt="${link.title || 'Link'}">
+                </div>
+                <div class="link-content">
+                    ${link.title ? `<h3 class="link-title">${link.title}</h3>` : ''}
+                    <div class="link-actions ${!link.title ? 'no-title' : ''}">
+                        <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="action-btn action-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                <polyline points="15 3 21 3 21 9"/>
+                                <line x1="10" y1="14" x2="21" y2="3"/>
+                            </svg>
+                            Link
+                        </a>
+                        <button class="action-btn action-edit" data-action="edit" data-id="${link.id}" data-category="${category}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
+                            Editar
+                        </button>
+                        <button class="action-btn action-delete" data-action="delete" data-id="${link.id}" data-category="${category}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"/>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            </svg>
+                            Borrar
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Delegación de eventos para las acciones
+            card.addEventListener('click', (e) => {
+                const actionBtn = e.target.closest('[data-action]');
+                if (actionBtn) {
+                    const action = actionBtn.getAttribute('data-action');
+                    const id = actionBtn.getAttribute('data-id');
+                    const category = actionBtn.getAttribute('data-category');
+                    
+                    if (action === 'edit') editLink(id, category);
+                    if (action === 'delete') deleteLink(id, category);
+                }
+            });
+            
+            return card;
+        }
+
+        // ============================================
+        // SUBIR IMAGEN A SUPABASE
+        // ============================================
         async function uploadImage(file) {
             const fileName = `${Date.now()}_${file.name}`;
             const { data, error } = await supabaseClient.storage
@@ -1053,42 +1154,49 @@
             return publicUrl;
         }
 
-        // Guardar link (crear o actualizar)
+        // ============================================
+        // CRUD: CREAR/ACTUALIZAR
+        // ============================================
         async function handleSubmit(e) {
             e.preventDefault();
             
+            // Validar imagen (solo si es nuevo link)
             if (!currentImageFile && !isEditing) {
                 alert('Por favor selecciona una imagen');
                 return;
             }
 
-            if (!urlInput.value) {
+            // Validar que haya imagen (nueva o existente) al editar
+            if (isEditing && !currentImageFile && !currentImageUrl) {
+                alert('Por favor selecciona una imagen');
+                return;
+            }
+
+            if (!elements.form.url.value) {
                 alert('Por favor ingresa una URL');
                 return;
             }
 
-            const category = categorySelect.value;
+            const category = elements.form.category.value;
 
             try {
-                let imageUrl = null;
+                let imageUrl = currentImageUrl; // Mantener URL existente
                 
+                // Solo subir nueva imagen si hay archivo nuevo
                 if (currentImageFile) {
                     imageUrl = await uploadImage(currentImageFile);
                 }
 
-                let finalUrl = urlInput.value.trim();
+                let finalUrl = elements.form.url.value.trim();
                 if (!/^https?:\/\//i.test(finalUrl)) {
                     finalUrl = 'https://' + finalUrl;
                 }
 
                 const linkData = {
-                    title: titleInput.value.trim() || null,
+                    title: elements.form.titleInput.value.trim() || null,
                     url: finalUrl,
+                    image_url: imageUrl
                 };
-
-                if (imageUrl) {
-                    linkData.image_url = imageUrl;
-                }
 
                 const tableName = `links_${category}`;
 
@@ -1116,37 +1224,41 @@
             }
         }
 
-        // Editar link
+        // ============================================
+        // CRUD: EDITAR
+        // ============================================
         async function editLink(id, category) {
-            const links = category === 'axl' ? linksAxl : 
-                         category === 'frecuentes' ? linksFrecuentes : linksVarios;
-            const link = links.find(l => l.id === id);
+            const link = linksData[category].find(l => l.id === id);
             if (!link) return;
 
             isEditing = true;
             editingId = id;
             editingCategory = category;
+            currentImageUrl = link.image_url; // Guardar URL existente
             
-            categorySelect.value = category;
-            titleInput.value = link.title || '';
-            urlInput.value = link.url;
-            imagePreview.src = link.image_url;
-            imagePreview.style.display = 'block';
-            imagePlaceholder.style.display = 'none';
+            elements.form.category.value = category;
+            elements.form.titleInput.value = link.title || '';
+            elements.form.url.value = link.url;
+            elements.image.preview.src = link.image_url;
+            elements.image.preview.style.display = 'block';
+            elements.image.placeholder.style.display = 'none';
+            elements.image.removeBtn.style.display = 'flex';
 
-            formTitle.innerHTML = `
+            elements.form.title.innerHTML = `
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                 </svg>
                 Modificar Link
             `;
-            btnSubmitText.textContent = 'Actualizar';
+            elements.form.submitText.textContent = 'Actualizar';
 
             switchView('home');
         }
 
-        // Eliminar link
+        // ============================================
+        // CRUD: ELIMINAR
+        // ============================================
         async function deleteLink(id, category) {
             if (!confirm('¿Estás seguro de eliminar este link?')) return;
 
@@ -1166,30 +1278,37 @@
             }
         }
 
-        // Resetear formulario
+        // ============================================
+        // RESETEAR FORMULARIO
+        // ============================================
         function resetForm() {
             isEditing = false;
             editingId = null;
             editingCategory = null;
-            titleInput.value = '';
-            urlInput.value = '';
             currentImageFile = null;
-            imagePreview.style.display = 'none';
-            imagePlaceholder.style.display = 'flex';
-            fileInput.value = '';
-            categorySelect.value = 'axl';
+            currentImageUrl = null;
+            
+            elements.form.titleInput.value = '';
+            elements.form.url.value = '';
+            elements.image.preview.style.display = 'none';
+            elements.image.placeholder.style.display = 'flex';
+            elements.image.removeBtn.style.display = 'none';
+            elements.image.input.value = '';
+            elements.form.category.value = 'axl';
 
-            formTitle.innerHTML = `
+            elements.form.title.innerHTML = `
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="12" y1="5" x2="12" y2="19"/>
                     <line x1="5" y1="12" x2="19" y2="12"/>
                 </svg>
                 Nuevo Link
             `;
-            btnSubmitText.textContent = 'Guardar';
+            elements.form.submitText.textContent = 'Guardar';
         }
 
-        // Iniciar aplicación
+        // ============================================
+        // INICIAR APLICACIÓN
+        // ============================================
         window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>

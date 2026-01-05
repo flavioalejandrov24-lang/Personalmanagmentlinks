@@ -581,16 +581,9 @@
 
     <div class="footer">DARK ENGINE V3 | PERSONAL</div>
 
-<script>
-    // Configuración de Supabase
-    const SUPABASE_CONFIG = {
-        url: 'https://nhqwwqfhazpzlksiftmd.supabase.co',  
-        anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ocXd3cWZoYXpwemxrc2lmdG1kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc1ODExMDYsImV4cCI6MjA4MzE1NzEwNn0.5GbOjyTy9Xa9_oB71pdNfiEdRtjxbixQ6khFzl4jn8o'
-    };
-    
-    
+    <script>
         // Variables globales
-        let supabase;
+        let supabaseClient;
         let links = [];
         let isEditing = false;
         let editingId = null;
@@ -616,15 +609,15 @@
 
         // Inicialización
         async function init() {
-            if (!SUPABASE_CONFIG.url || !SUPABASE_CONFIG.anonKey) {
-                alert('ERROR: Configura tu Supabase en config.js');
+            const SUPABASE_URL = 'https://nhqwwqfhazpzlksiftmd.supabase.co';
+            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ocXd3cWZoYXpwemxrc2lmdG1kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc1ODExMDYsImV4cCI6MjA4MzE1NzEwNn0.5GbOjyTy9Xa9_oB71pdNfiEdRtjxbixQ6khFzl4jn8o';
+
+            if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+                alert('ERROR: No se encontró la configuración de Supabase');
                 return;
             }
 
-            supabase = window.supabase.createClient(
-                SUPABASE_CONFIG.url,
-                SUPABASE_CONFIG.anonKey
-            );
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
             await loadLinks();
             setupEventListeners();
@@ -681,7 +674,7 @@
         // Cargar links desde Supabase
         async function loadLinks() {
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('links')
                     .select('*')
                     .order('created_at', { ascending: false });
@@ -753,13 +746,13 @@
         // Subir imagen a Supabase Storage
         async function uploadImage(file) {
             const fileName = `${Date.now()}_${file.name}`;
-            const { data, error } = await supabase.storage
+            const { data, error } = await supabaseClient.storage
                 .from('link-images')
                 .upload(fileName, file);
 
             if (error) throw error;
 
-            const { data: { publicUrl } } = supabase.storage
+            const { data: { publicUrl } } = supabaseClient.storage
                 .from('link-images')
                 .getPublicUrl(fileName);
 
@@ -802,14 +795,14 @@
                 }
 
                 if (isEditing && editingId) {
-                    const { error } = await supabase
+                    const { error } = await supabaseClient
                         .from('links')
                         .update(linkData)
                         .eq('id', editingId);
 
                     if (error) throw error;
                 } else {
-                    const { error } = await supabase
+                    const { error } = await supabaseClient
                         .from('links')
                         .insert([linkData]);
 
@@ -856,7 +849,7 @@
             if (!confirm('¿Estás seguro de eliminar este link?')) return;
 
             try {
-                const { error } = await supabase
+                const { error } = await supabaseClient
                     .from('links')
                     .delete()
                     .eq('id', id);

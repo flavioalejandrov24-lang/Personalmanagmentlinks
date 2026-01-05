@@ -75,6 +75,7 @@
         .nav-buttons {
             display: flex;
             gap: 0.75rem;
+            align-items: center;
         }
 
         .nav-btn {
@@ -100,6 +101,109 @@
         .nav-btn.active {
             color: #ea580c;
             background: rgba(234, 88, 12, 0.1);
+        }
+
+        /* Menú Hamburguesa */
+        .hamburger-btn {
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: 1px solid #374151;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+
+        .hamburger-btn:hover {
+            border-color: #ea580c;
+            background: rgba(234, 88, 12, 0.1);
+        }
+
+        .hamburger-btn span {
+            width: 20px;
+            height: 2px;
+            background: #9ca3af;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .hamburger-btn:hover span {
+            background: #ea580c;
+        }
+
+        .hamburger-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        .menu-dropdown {
+            position: absolute;
+            top: 90px;
+            right: 1.5rem;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid #1a1a1a;
+            border-radius: 16px;
+            padding: 0.5rem;
+            min-width: 220px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .menu-dropdown.active {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1rem;
+            border-radius: 12px;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .menu-item:hover {
+            background: #1f2937;
+            color: white;
+        }
+
+        .menu-item.active {
+            background: rgba(234, 88, 12, 0.1);
+            color: #ea580c;
+        }
+
+        .menu-item svg {
+            width: 18px;
+            height: 18px;
         }
 
         .container {
@@ -197,7 +301,7 @@
             margin-bottom: 0.25rem;
         }
 
-        .form-input {
+        .form-input, .form-select {
             width: 100%;
             padding: 0.75rem 1rem;
             background: #222;
@@ -206,10 +310,20 @@
             color: white;
             outline: none;
             transition: all 0.3s;
+            font-family: inherit;
         }
 
-        .form-input:focus {
+        .form-input:focus, .form-select:focus {
             border-color: #ea580c;
+        }
+
+        .form-select {
+            cursor: pointer;
+        }
+
+        .form-select option {
+            background: #222;
+            color: white;
         }
 
         .form-buttons {
@@ -476,6 +590,12 @@
             .links-grid {
                 grid-template-columns: 1fr;
             }
+
+            .menu-dropdown {
+                right: 1rem;
+                left: 1rem;
+                min-width: auto;
+            }
         }
     </style>
 </head>
@@ -483,7 +603,6 @@
     <nav>
         <div class="nav-container">
             <div class="nav-logo">
-                <!-- ESTA ES LA MODIFICACION NUEVA DEL LOGO, AVER 👀 -->
                 <div id="logoIcon" class="logo-icon" role="button" tabindex="0" aria-label="Volver">
                   <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                     <polyline points="15 18 9 12 15 6"></polyline>
@@ -499,23 +618,46 @@
                     </svg>
                     <span>Inicio</span>
                 </button>
-                <button class="nav-btn" id="navList">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="8" y1="6" x2="21" y2="6"/>
-                        <line x1="8" y1="12" x2="21" y2="12"/>
-                        <line x1="8" y1="18" x2="21" y2="18"/>
-                        <line x1="3" y1="6" x2="3.01" y2="6"/>
-                        <line x1="3" y1="12" x2="3.01" y2="12"/>
-                        <line x1="3" y1="18" x2="3.01" y2="18"/>
-                    </svg>
-                    <span>Catálogo</span>
+                
+                <button class="hamburger-btn" id="hamburgerBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </button>
+            </div>
+        </div>
+
+        <div class="menu-dropdown" id="menuDropdown">
+            <div class="menu-item" data-view="axl">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7"/>
+                    <rect x="14" y="3" width="7" height="7"/>
+                    <rect x="14" y="14" width="7" height="7"/>
+                    <rect x="3" y="14" width="7" height="7"/>
+                </svg>
+                Catálogo Axl
+            </div>
+            <div class="menu-item" data-view="frecuentes">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                Links Frecuentes
+            </div>
+            <div class="menu-item" data-view="varios">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                Varios Links
             </div>
         </div>
     </nav>
 
     <div class="container">
-        <div id="homeView" class="view active">
+        <!-- Vista del Formulario -->
+        <div id="homeView" class="view">
             <div class="form-container">
                 <h2 class="form-title" id="formTitle">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -538,6 +680,17 @@
                         <img id="imagePreview" style="display: none;" alt="Preview">
                     </div>
                     <input type="file" id="fileInput" accept="image/*" style="display: none;">
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <span>Categoría</span>
+                        </label>
+                        <select class="form-select" id="categorySelect" required>
+                            <option value="axl">Catálogo Axl</option>
+                            <option value="frecuentes">Links Frecuentes</option>
+                            <option value="varios">Varios Links</option>
+                        </select>
+                    </div>
 
                     <div class="form-group">
                         <label class="form-label">
@@ -567,10 +720,11 @@
             </div>
         </div>
 
-        <div id="listView" class="view">
+        <!-- Vista Catálogo Axl -->
+        <div id="axlView" class="view active">
             <div class="catalog-header">
-                <h2 class="catalog-title">Catálogo <span>Visual</span></h2>
-                <button class="btn-add" id="btnAddLink">
+                <h2 class="catalog-title">Catálogo <span>Axl</span></h2>
+                <button class="btn-add" id="btnAddAxl">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="12" y1="5" x2="12" y2="19"/>
                         <line x1="5" y1="12" x2="19" y2="12"/>
@@ -578,8 +732,41 @@
                     Agregar Link
                 </button>
             </div>
+            <div id="axlContainer">
+                <div class="loading">CARGANDO...</div>
+            </div>
+        </div>
 
-            <div id="linksContainer">
+        <!-- Vista Links Frecuentes -->
+        <div id="frecuentesView" class="view">
+            <div class="catalog-header">
+                <h2 class="catalog-title">Links <span>Frecuentes</span></h2>
+                <button class="btn-add" id="btnAddFrecuentes">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Agregar Link
+                </button>
+            </div>
+            <div id="frecuentesContainer">
+                <div class="loading">CARGANDO...</div>
+            </div>
+        </div>
+
+        <!-- Vista Varios Links -->
+        <div id="variosView" class="view">
+            <div class="catalog-header">
+                <h2 class="catalog-title">Varios <span>Links</span></h2>
+                <button class="btn-add" id="btnAddVarios">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Agregar Link
+                </button>
+            </div>
+            <div id="variosContainer">
                 <div class="loading">CARGANDO...</div>
             </div>
         </div>
@@ -590,26 +777,38 @@
     <script>
         // Variables globales
         let supabaseClient;
-        let links = [];
+        let linksAxl = [];
+        let linksFrecuentes = [];
+        let linksVarios = [];
         let isEditing = false;
         let editingId = null;
+        let editingCategory = null;
         let currentImageFile = null;
+        let currentView = 'axl';
 
         // Elementos del DOM
         const homeView = document.getElementById('homeView');
-        const listView = document.getElementById('listView');
+        const axlView = document.getElementById('axlView');
+        const frecuentesView = document.getElementById('frecuentesView');
+        const variosView = document.getElementById('variosView');
         const navHome = document.getElementById('navHome');
-        const navList = document.getElementById('navList');
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const menuDropdown = document.getElementById('menuDropdown');
         const linkForm = document.getElementById('linkForm');
         const imageUpload = document.getElementById('imageUpload');
         const fileInput = document.getElementById('fileInput');
         const imagePreview = document.getElementById('imagePreview');
         const imagePlaceholder = document.getElementById('imagePlaceholder');
+        const categorySelect = document.getElementById('categorySelect');
         const titleInput = document.getElementById('titleInput');
         const urlInput = document.getElementById('urlInput');
         const btnCancel = document.getElementById('btnCancel');
-        const btnAddLink = document.getElementById('btnAddLink');
-        const linksContainer = document.getElementById('linksContainer');
+        const btnAddAxl = document.getElementById('btnAddAxl');
+        const btnAddFrecuentes = document.getElementById('btnAddFrecuentes');
+        const btnAddVarios = document.getElementById('btnAddVarios');
+        const axlContainer = document.getElementById('axlContainer');
+        const frecuentesContainer = document.getElementById('frecuentesContainer');
+        const variosContainer = document.getElementById('variosContainer');
         const formTitle = document.getElementById('formTitle');
         const btnSubmitText = document.getElementById('btnSubmitText');
 
@@ -625,32 +824,77 @@
 
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-            await loadLinks();
+            await loadAllLinks();
             setupEventListeners();
-            switchView('list');
+            switchView('axl'); // Siempre inicia en Catálogo Axl
         }
 
         // Event Listeners
         function setupEventListeners() {
-            navHome.addEventListener('click', () => switchView('home'));
-            navList.addEventListener('click', () => switchView('list'));
+            navHome.addEventListener('click', () => {
+                resetForm();
+                switchView('home');
+            });
+
+            // Menú hamburguesa
+            hamburgerBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                hamburgerBtn.classList.toggle('active');
+                menuDropdown.classList.toggle('active');
+            });
+
+            // Cerrar menú al hacer clic fuera
+            document.addEventListener('click', (e) => {
+                if (!hamburgerBtn.contains(e.target) && !menuDropdown.contains(e.target)) {
+                    hamburgerBtn.classList.remove('active');
+                    menuDropdown.classList.remove('active');
+                }
+            });
+
+            // Items del menú
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const view = item.getAttribute('data-view');
+                    switchView(view);
+                    hamburgerBtn.classList.remove('active');
+                    menuDropdown.classList.remove('active');
+                });
+            });
 
             const logoIcon = document.getElementById('logoIcon');
             if (logoIcon) {
                 logoIcon.addEventListener('click', () => window.history.back());
                 logoIcon.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.history.back(); }
+                    if (e.key === 'Enter' || e.key === ' ') { 
+                        e.preventDefault(); 
+                        window.history.back(); 
+                    }
                 });
             }
 
-            btnAddLink.addEventListener('click', () => {
+            btnAddAxl.addEventListener('click', () => {
                 resetForm();
+                categorySelect.value = 'axl';
                 switchView('home');
             });
+
+            btnAddFrecuentes.addEventListener('click', () => {
+                resetForm();
+                categorySelect.value = 'frecuentes';
+                switchView('home');
+            });
+
+            btnAddVarios.addEventListener('click', () => {
+                resetForm();
+                categorySelect.value = 'varios';
+                switchView('home');
+            });
+
             btnCancel.addEventListener('click', () => {
                 resetForm();
-                switchView('list');
+                switchView(currentView);
             });
+
             imageUpload.addEventListener('click', () => fileInput.click());
             fileInput.addEventListener('change', handleImageChange);
             linkForm.addEventListener('submit', handleSubmit);
@@ -658,16 +902,30 @@
 
         // Navegación entre vistas
         function switchView(view) {
+            currentView = view;
+            
+            homeView.classList.remove('active');
+            axlView.classList.remove('active');
+            frecuentesView.classList.remove('active');
+            variosView.classList.remove('active');
+            
+            navHome.classList.remove('active');
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
             if (view === 'home') {
                 homeView.classList.add('active');
-                listView.classList.remove('active');
                 navHome.classList.add('active');
-                navList.classList.remove('active');
-            } else {
-                homeView.classList.remove('active');
-                listView.classList.add('active');
-                navHome.classList.remove('active');
-                navList.classList.add('active');
+            } else if (view === 'axl') {
+                axlView.classList.add('active');
+                document.querySelector('[data-view="axl"]').classList.add('active');
+            } else if (view === 'frecuentes') {
+                frecuentesView.classList.add('active');
+                document.querySelector('[data-view="frecuentes"]').classList.add('active');
+            } else if (view === 'varios') {
+                variosView.classList.add('active');
+                document.querySelector('[data-view="varios"]').classList.add('active');
             }
         }
 
@@ -686,28 +944,49 @@
             reader.readAsDataURL(file);
         }
 
-        // Cargar links desde Supabase
-        async function loadLinks() {
+        // Cargar todos los links
+        async function loadAllLinks() {
+            await loadLinks('axl');
+            await loadLinks('frecuentes');
+            await loadLinks('varios');
+        }
+
+        // Cargar links por categoría
+        async function loadLinks(category) {
             try {
+                const tableName = `links_${category}`;
                 const { data, error } = await supabaseClient
-                    .from('links')
+                    .from(tableName)
                     .select('*')
                     .order('created_at', { ascending: false });
 
                 if (error) throw error;
 
-                links = data || [];
-                renderLinks();
+                if (category === 'axl') {
+                    linksAxl = data || [];
+                    renderLinks('axl', axlContainer);
+                } else if (category === 'frecuentes') {
+                    linksFrecuentes = data || [];
+                    renderLinks('frecuentes', frecuentesContainer);
+                } else if (category === 'varios') {
+                    linksVarios = data || [];
+                    renderLinks('varios', variosContainer);
+                }
             } catch (error) {
-                console.error('Error cargando links:', error);
-                linksContainer.innerHTML = '<div class="empty-state"><p>Error al cargar los links</p></div>';
+                console.error(`Error cargando links de ${category}:`, error);
+                const container = category === 'axl' ? axlContainer : 
+                                category === 'frecuentes' ? frecuentesContainer : variosContainer;
+                container.innerHTML = '<div class="empty-state"><p>Error al cargar los links</p></div>';
             }
         }
 
         // Renderizar lista de links
-        function renderLinks() {
+        function renderLinks(category, container) {
+            const links = category === 'axl' ? linksAxl : 
+                         category === 'frecuentes' ? linksFrecuentes : linksVarios;
+
             if (links.length === 0) {
-                linksContainer.innerHTML = '<div class="empty-state"><p>Tu galería está vacía.</p></div>';
+                container.innerHTML = '<div class="empty-state"><p>Tu galería está vacía.</p></div>';
                 return;
             }
 
@@ -733,14 +1012,14 @@
                                 </svg>
                                 Link
                             </a>
-                            <button class="action-btn action-edit" onclick="editLink('${link.id}')">
+                            <button class="action-btn action-edit" onclick="editLink('${link.id}', '${category}')">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                                     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                                 </svg>
                                 Editar
                             </button>
-                            <button class="action-btn action-delete" onclick="deleteLink('${link.id}')">
+                            <button class="action-btn action-delete" onclick="deleteLink('${link.id}', '${category}')">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <polyline points="3 6 5 6 21 6"/>
                                     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
@@ -754,8 +1033,8 @@
                 grid.appendChild(card);
             });
 
-            linksContainer.innerHTML = '';
-            linksContainer.appendChild(grid);
+            container.innerHTML = '';
+            container.appendChild(grid);
         }
 
         // Subir imagen a Supabase Storage
@@ -788,6 +1067,8 @@
                 return;
             }
 
+            const category = categorySelect.value;
+
             try {
                 let imageUrl = null;
                 
@@ -809,24 +1090,26 @@
                     linkData.image_url = imageUrl;
                 }
 
+                const tableName = `links_${category}`;
+
                 if (isEditing && editingId) {
                     const { error } = await supabaseClient
-                        .from('links')
+                        .from(tableName)
                         .update(linkData)
                         .eq('id', editingId);
 
                     if (error) throw error;
                 } else {
                     const { error } = await supabaseClient
-                        .from('links')
+                        .from(tableName)
                         .insert([linkData]);
 
                     if (error) throw error;
                 }
 
                 resetForm();
-                await loadLinks();
-                switchView('list');
+                await loadLinks(category);
+                switchView(category);
             } catch (error) {
                 console.error('Error guardando link:', error);
                 alert('Error al guardar el link: ' + error.message);
@@ -834,13 +1117,17 @@
         }
 
         // Editar link
-        async function editLink(id) {
+        async function editLink(id, category) {
+            const links = category === 'axl' ? linksAxl : 
+                         category === 'frecuentes' ? linksFrecuentes : linksVarios;
             const link = links.find(l => l.id === id);
             if (!link) return;
 
             isEditing = true;
             editingId = id;
+            editingCategory = category;
             
+            categorySelect.value = category;
             titleInput.value = link.title || '';
             urlInput.value = link.url;
             imagePreview.src = link.image_url;
@@ -860,18 +1147,19 @@
         }
 
         // Eliminar link
-        async function deleteLink(id) {
+        async function deleteLink(id, category) {
             if (!confirm('¿Estás seguro de eliminar este link?')) return;
 
             try {
+                const tableName = `links_${category}`;
                 const { error } = await supabaseClient
-                    .from('links')
+                    .from(tableName)
                     .delete()
                     .eq('id', id);
 
                 if (error) throw error;
 
-                await loadLinks();
+                await loadLinks(category);
             } catch (error) {
                 console.error('Error eliminando link:', error);
                 alert('Error al eliminar el link: ' + error.message);
@@ -882,12 +1170,14 @@
         function resetForm() {
             isEditing = false;
             editingId = null;
+            editingCategory = null;
             titleInput.value = '';
             urlInput.value = '';
             currentImageFile = null;
             imagePreview.style.display = 'none';
             imagePlaceholder.style.display = 'flex';
             fileInput.value = '';
+            categorySelect.value = 'axl';
 
             formTitle.innerHTML = `
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

@@ -168,14 +168,8 @@
         }
 
         @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .menu-item {
@@ -222,10 +216,13 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
+            from { opacity: 0; transform: scale(0.98); }
             to { opacity: 1; transform: scale(1); }
         }
 
+        /* ============================================ */
+        /* FORM */
+        /* ============================================ */
         .form-container {
             max-width: 28rem;
             margin: 0 auto;
@@ -263,9 +260,7 @@
             margin-bottom: 1.5rem;
         }
 
-        .image-upload:hover {
-            border-color: #ea580c;
-        }
+        .image-upload:hover { border-color: #ea580c; }
 
         .image-upload img {
             width: 100%;
@@ -308,15 +303,9 @@
             transform: scale(1.1);
         }
 
-        .remove-image-btn svg {
-            width: 20px;
-            height: 20px;
-            stroke: white;
-        }
+        .remove-image-btn svg { width: 20px; height: 20px; stroke: white; }
 
-        .form-group {
-            margin-bottom: 1rem;
-        }
+        .form-group { margin-bottom: 1rem; }
 
         .form-label {
             display: flex;
@@ -341,18 +330,9 @@
             font-family: inherit;
         }
 
-        .form-input:focus, .form-select:focus {
-            border-color: #ea580c;
-        }
-
-        .form-select {
-            cursor: pointer;
-        }
-
-        .form-select option {
-            background: #222;
-            color: white;
-        }
+        .form-input:focus, .form-select:focus { border-color: #ea580c; }
+        .form-select { cursor: pointer; }
+        .form-select option { background: #222; color: white; }
 
         .form-buttons {
             display: flex;
@@ -380,19 +360,18 @@
             box-shadow: 0 10px 25px rgba(234, 88, 12, 0.2);
         }
 
-        .btn-primary:hover {
-            background: #f97316;
-        }
+        .btn-primary:hover { background: #f97316; }
 
         .btn-secondary {
             background: #1f2937;
             color: #d1d5db;
         }
 
-        .btn-secondary:hover {
-            background: #374151;
-        }
+        .btn-secondary:hover { background: #374151; }
 
+        /* ============================================ */
+        /* CATALOG HEADER */
+        /* ============================================ */
         .catalog-header {
             display: flex;
             justify-content: space-between;
@@ -406,9 +385,44 @@
             font-weight: 900;
         }
 
-        .catalog-title span {
-            color: #ea580c;
+        .catalog-title span { color: #ea580c; }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
+
+        /* Botón modo reorder */
+        .btn-reorder {
+            background: transparent;
+            color: #9ca3af;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid #374151;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-reorder:hover {
+            color: #ea580c;
+            border-color: #ea580c;
+            background: rgba(234, 88, 12, 0.1);
+        }
+
+        .btn-reorder.active {
+            color: #ea580c;
+            border-color: #ea580c;
+            background: rgba(234, 88, 12, 0.15);
+            box-shadow: 0 0 15px rgba(234, 88, 12, 0.2);
+        }
+
+        .btn-reorder svg { width: 16px; height: 16px; }
 
         .btn-add {
             background: #ea580c;
@@ -425,39 +439,110 @@
             box-shadow: 0 10px 25px rgba(234, 88, 12, 0.3);
         }
 
-        .btn-add:hover {
-            background: #f97316;
+        .btn-add:hover { background: #f97316; }
+
+        /* Banner modo ordenamiento */
+        .reorder-banner {
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1.25rem;
+            background: rgba(234, 88, 12, 0.1);
+            border: 1px solid rgba(234, 88, 12, 0.3);
+            border-radius: 12px;
+            margin: 0 1rem 1.5rem;
+            color: #fb923c;
+            font-size: 0.875rem;
+            font-weight: 600;
         }
 
-        .loading {
-            text-align: center;
-            padding: 5rem 0;
-            color: rgba(234, 88, 12, 0.5);
+        .reorder-banner.active { display: flex; }
+
+        .reorder-banner svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .reorder-banner span { flex: 1; }
+
+        .btn-save-order {
+            background: #ea580c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.4rem 0.9rem;
+            font-size: 0.8rem;
             font-weight: 700;
-            letter-spacing: 0.1em;
-            animation: pulse 2s infinite;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        .btn-save-order:hover { background: #f97316; }
+        .btn-save-order:disabled { opacity: 0.6; cursor: default; }
+
+        /* ============================================ */
+        /* SKELETON LOADING */
+        /* ============================================ */
+        .skeleton-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 0 1rem;
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 5rem 1rem;
-            background: #111;
-            border-radius: 1.5rem;
+        .skeleton-card {
+            background: #1a1a1a;
+            border-radius: 1rem;
+            overflow: hidden;
             border: 1px solid #1f2937;
-            margin: 0 1rem;
         }
 
-        .empty-state p {
-            color: #6b7280;
-            font-size: 1.125rem;
-            font-style: italic;
+        .skeleton-img {
+            height: 12rem;
+            background: linear-gradient(90deg, #1f2937 25%, #2d3748 50%, #1f2937 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
         }
 
+        .skeleton-content { padding: 1.25rem; }
+
+        .skeleton-line {
+            height: 14px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #1f2937 25%, #2d3748 50%, #1f2937 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            margin-bottom: 1rem;
+        }
+
+        .skeleton-line.short { width: 60%; }
+
+        .skeleton-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid #1f2937;
+        }
+
+        .skeleton-btn {
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(90deg, #1f2937 25%, #2d3748 50%, #1f2937 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* ============================================ */
+        /* GRID DE LINKS */
+        /* ============================================ */
         .links-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -465,18 +550,68 @@
             padding: 0 1rem;
         }
 
+        /* ============================================ */
+        /* CARDS */
+        /* ============================================ */
         .link-card {
             background: #1a1a1a;
             border-radius: 1rem;
             overflow: hidden;
             border: 1px solid #1f2937;
-            transition: all 0.3s;
+            transition: border-color 0.3s, box-shadow 0.3s;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            user-select: none;
         }
 
-        .link-card:hover {
-            border-color: rgba(234, 88, 12, 0.5);
+        .link-card:hover { border-color: rgba(234, 88, 12, 0.5); }
+
+        /* Modo reorder - cursor y estilos */
+        .links-grid.reorder-mode .link-card {
+            cursor: grab;
+            border-color: rgba(234, 88, 12, 0.3);
         }
+
+        .links-grid.reorder-mode .link-card:hover {
+            border-color: rgba(234, 88, 12, 0.7);
+            box-shadow: 0 0 20px rgba(234, 88, 12, 0.2);
+        }
+
+        .links-grid.reorder-mode .link-card:active { cursor: grabbing; }
+
+        /* Card siendo arrastrada */
+        .link-card.dragging {
+            opacity: 0.4;
+            border-color: #ea580c !important;
+            transform: scale(0.98);
+        }
+
+        /* Card donde se va a soltar */
+        .link-card.drag-over {
+            border-color: #ea580c !important;
+            box-shadow: 0 0 25px rgba(234, 88, 12, 0.4) !important;
+            transform: scale(1.02);
+        }
+
+        /* Handle de arrastre (icono visible en modo reorder) */
+        .drag-handle {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 28px;
+            height: 28px;
+            background: rgba(234, 88, 12, 0.85);
+            border-radius: 8px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            color: white;
+        }
+
+        .drag-handle svg { width: 14px; height: 14px; }
+
+        .links-grid.reorder-mode .drag-handle { display: flex; }
 
         .link-image {
             position: relative;
@@ -485,18 +620,29 @@
             background: black;
         }
 
-        .link-card img {
+        /* Imagen con lazy loading */
+        .link-card img.card-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.9;
-            transition: all 0.7s;
+            opacity: 0;
+            transition: opacity 0.4s ease, transform 0.7s;
         }
 
-        .link-card:hover img {
-            opacity: 1;
-            transform: scale(1.05);
+        .link-card img.card-img.loaded { opacity: 0.9; }
+        .link-card:hover img.card-img.loaded { opacity: 1; transform: scale(1.05); }
+
+        /* Placeholder mientras carga la imagen */
+        .img-skeleton {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, #1f2937 25%, #2d3748 50%, #1f2937 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            transition: opacity 0.4s;
         }
+
+        .img-skeleton.hidden { opacity: 0; pointer-events: none; }
 
         .link-content {
             padding: 1.25rem;
@@ -532,6 +678,9 @@
             padding-top: 0;
         }
 
+        /* En modo reorder, ocultar los botones de acción */
+        .links-grid.reorder-mode .link-actions { pointer-events: none; opacity: 0.4; }
+
         .action-btn {
             display: flex;
             flex-direction: column;
@@ -549,10 +698,7 @@
             letter-spacing: -0.025em;
         }
 
-        .action-btn svg {
-            width: 16px;
-            height: 16px;
-        }
+        .action-btn svg { width: 16px; height: 16px; }
 
         .action-link {
             background: rgba(34, 197, 94, 0.2);
@@ -591,6 +737,54 @@
             border-color: #f87171;
         }
 
+        /* ============================================ */
+        /* EMPTY STATE */
+        /* ============================================ */
+        .empty-state {
+            text-align: center;
+            padding: 5rem 1rem;
+            background: #111;
+            border-radius: 1.5rem;
+            border: 1px solid #1f2937;
+            margin: 0 1rem;
+        }
+
+        .empty-state p {
+            color: #6b7280;
+            font-size: 1.125rem;
+            font-style: italic;
+        }
+
+        /* ============================================ */
+        /* TOAST NOTIFICATION */
+        /* ============================================ */
+        .toast {
+            position: fixed;
+            bottom: 5rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #1a1a1a;
+            border: 1px solid #ea580c;
+            color: #fb923c;
+            padding: 0.75rem 1.5rem;
+            border-radius: 99px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            opacity: 0;
+            transition: all 0.3s;
+            pointer-events: none;
+            z-index: 9999;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ============================================ */
+        /* FOOTER */
+        /* ============================================ */
         .footer {
             position: fixed;
             bottom: 1.5rem;
@@ -607,23 +801,18 @@
         }
 
         @media (max-width: 640px) {
-            .nav-title {
-                display: none;
-            }
-
-            .nav-btn span {
-                display: none;
-            }
-
-            .links-grid {
-                grid-template-columns: 1fr;
-            }
+            .nav-title { display: none; }
+            .nav-btn span { display: none; }
+            .links-grid { grid-template-columns: 1fr; }
+            .skeleton-grid { grid-template-columns: 1fr; }
 
             .menu-dropdown {
                 right: 1rem;
                 left: 1rem;
                 min-width: auto;
             }
+
+            .btn-reorder span { display: none; }
         }
     </style>
 </head>
@@ -635,9 +824,9 @@
         <div class="nav-container">
             <div class="nav-logo">
                 <div id="logoIcon" class="logo-icon" role="button" tabindex="0" aria-label="Volver">
-                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                  </svg>
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
                 </div>
                 <h1 class="nav-title">Links Administrator</h1>
             </div>
@@ -649,7 +838,6 @@
                     </svg>
                     <span>Inicio</span>
                 </button>
-                
                 <button class="hamburger-btn" id="hamburgerBtn">
                     <span></span>
                     <span></span>
@@ -699,7 +887,7 @@
                     </svg>
                     Nuevo Link
                 </h2>
-                
+
                 <form id="linkForm">
                     <div class="image-upload" id="imageUpload">
                         <div class="image-placeholder" id="imagePlaceholder">
@@ -721,9 +909,7 @@
                     <input type="file" id="fileInput" accept="image/*" style="display: none;">
 
                     <div class="form-group">
-                        <label class="form-label">
-                            <span>Categoría</span>
-                        </label>
+                        <label class="form-label"><span>Categoría</span></label>
                         <select class="form-select" id="categorySelect" required>
                             <option value="axl">Catálogo Axl</option>
                             <option value="frecuentes">Links Frecuentes</option>
@@ -765,16 +951,33 @@
         <div id="axlView" class="view active">
             <div class="catalog-header">
                 <h2 class="catalog-title">Catálogo <span>Axl</span></h2>
-                <button class="btn-add" data-category="axl">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="12" y1="5" x2="12" y2="19"/>
-                        <line x1="5" y1="12" x2="19" y2="12"/>
-                    </svg>
-                    Agregar Link
-                </button>
+                <div class="header-right">
+                    <button class="btn-reorder" data-category="axl" id="reorderBtn-axl">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="3" y1="6" x2="21" y2="6"/>
+                            <line x1="3" y1="12" x2="21" y2="12"/>
+                            <line x1="3" y1="18" x2="21" y2="18"/>
+                        </svg>
+                        <span>Ordenar</span>
+                    </button>
+                    <button class="btn-add" data-category="axl">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Agregar Link
+                    </button>
+                </div>
+            </div>
+            <div class="reorder-banner" id="reorderBanner-axl">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 9l4-4 4 4M9 5v14M19 15l-4 4-4-4M15 19V5"/>
+                </svg>
+                <span>Arrastra las cards para reordenarlas</span>
+                <button class="btn-save-order" data-category="axl" id="saveOrderBtn-axl">Guardar orden</button>
             </div>
             <div id="axlContainer">
-                <div class="loading">CARGANDO...</div>
+                <div class="skeleton-grid" id="skeletonAxl"></div>
             </div>
         </div>
 
@@ -784,16 +987,33 @@
         <div id="frecuentesView" class="view">
             <div class="catalog-header">
                 <h2 class="catalog-title">Links <span>Frecuentes</span></h2>
-                <button class="btn-add" data-category="frecuentes">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="12" y1="5" x2="12" y2="19"/>
-                        <line x1="5" y1="12" x2="19" y2="12"/>
-                    </svg>
-                    Agregar Link
-                </button>
+                <div class="header-right">
+                    <button class="btn-reorder" data-category="frecuentes" id="reorderBtn-frecuentes">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="3" y1="6" x2="21" y2="6"/>
+                            <line x1="3" y1="12" x2="21" y2="12"/>
+                            <line x1="3" y1="18" x2="21" y2="18"/>
+                        </svg>
+                        <span>Ordenar</span>
+                    </button>
+                    <button class="btn-add" data-category="frecuentes">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Agregar Link
+                    </button>
+                </div>
+            </div>
+            <div class="reorder-banner" id="reorderBanner-frecuentes">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 9l4-4 4 4M9 5v14M19 15l-4 4-4-4M15 19V5"/>
+                </svg>
+                <span>Arrastra las cards para reordenarlas</span>
+                <button class="btn-save-order" data-category="frecuentes" id="saveOrderBtn-frecuentes">Guardar orden</button>
             </div>
             <div id="frecuentesContainer">
-                <div class="loading">CARGANDO...</div>
+                <div class="skeleton-grid" id="skeletonFrecuentes"></div>
             </div>
         </div>
 
@@ -803,19 +1023,39 @@
         <div id="variosView" class="view">
             <div class="catalog-header">
                 <h2 class="catalog-title">Varios <span>Links</span></h2>
-                <button class="btn-add" data-category="varios">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="12" y1="5" x2="12" y2="19"/>
-                        <line x1="5" y1="12" x2="19" y2="12"/>
-                    </svg>
-                    Agregar Link
-                </button>
+                <div class="header-right">
+                    <button class="btn-reorder" data-category="varios" id="reorderBtn-varios">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="3" y1="6" x2="21" y2="6"/>
+                            <line x1="3" y1="12" x2="21" y2="12"/>
+                            <line x1="3" y1="18" x2="21" y2="18"/>
+                        </svg>
+                        <span>Ordenar</span>
+                    </button>
+                    <button class="btn-add" data-category="varios">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Agregar Link
+                    </button>
+                </div>
+            </div>
+            <div class="reorder-banner" id="reorderBanner-varios">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 9l4-4 4 4M9 5v14M19 15l-4 4-4-4M15 19V5"/>
+                </svg>
+                <span>Arrastra las cards para reordenarlas</span>
+                <button class="btn-save-order" data-category="varios" id="saveOrderBtn-varios">Guardar orden</button>
             </div>
             <div id="variosContainer">
-                <div class="loading">CARGANDO...</div>
+                <div class="skeleton-grid" id="skeletonVarios"></div>
             </div>
         </div>
     </div>
+
+    <!-- Toast de notificación -->
+    <div class="toast" id="toast"></div>
 
     <div class="footer">DARK ENGINE V3 | PERSONAL</div>
 
@@ -824,17 +1064,16 @@
         // VARIABLES GLOBALES
         // ============================================
         let supabaseClient;
-        const linksData = {
-            axl: [],
-            frecuentes: [],
-            varios: []
-        };
+        const linksData = { axl: [], frecuentes: [], varios: [] };
         let isEditing = false;
         let editingId = null;
         let editingCategory = null;
         let currentImageFile = null;
-        let currentImageUrl = null; // Para mantener la URL al editar
+        let currentImageUrl = null;
         let currentView = 'axl';
+
+        // Estado del drag & drop por categoría
+        const reorderState = { axl: false, frecuentes: false, varios: false };
 
         // ============================================
         // ELEMENTOS DEL DOM
@@ -876,13 +1115,86 @@
         };
 
         // ============================================
-        // CONFIGURACIÓN DE CATEGORÍAS
+        // TOAST HELPER
         // ============================================
-        const categories = {
-            axl: { title: 'Catálogo Axl' },
-            frecuentes: { title: 'Links Frecuentes' },
-            varios: { title: 'Varios Links' }
-        };
+        function showToast(msg, duration = 2500) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), duration);
+        }
+
+        // ============================================
+        // SKELETON LOADING - Genera skeletons mientras carga
+        // ============================================
+        function showSkeletons(category, count = 6) {
+            const skeletonMap = {
+                axl: 'skeletonAxl',
+                frecuentes: 'skeletonFrecuentes',
+                varios: 'skeletonVarios'
+            };
+            const skeletonEl = document.getElementById(skeletonMap[category]);
+            if (!skeletonEl) return;
+
+            skeletonEl.innerHTML = '';
+            for (let i = 0; i < count; i++) {
+                skeletonEl.innerHTML += `
+                    <div class="skeleton-card">
+                        <div class="skeleton-img"></div>
+                        <div class="skeleton-content">
+                            <div class="skeleton-line short"></div>
+                            <div class="skeleton-actions">
+                                <div class="skeleton-btn"></div>
+                                <div class="skeleton-btn"></div>
+                                <div class="skeleton-btn"></div>
+                            </div>
+                        </div>
+                    </div>`;
+            }
+            skeletonEl.style.display = 'grid';
+        }
+
+        function hideSkeletons(category) {
+            const skeletonMap = {
+                axl: 'skeletonAxl',
+                frecuentes: 'skeletonFrecuentes',
+                varios: 'skeletonVarios'
+            };
+            const skeletonEl = document.getElementById(skeletonMap[category]);
+            if (skeletonEl) skeletonEl.style.display = 'none';
+        }
+
+        // ============================================
+        // LAZY IMAGE LOADING
+        // ============================================
+        function setupLazyImage(imgEl, skeletonEl, src) {
+            const tempImg = new Image();
+            tempImg.onload = () => {
+                imgEl.src = src;
+                imgEl.classList.add('loaded');
+                skeletonEl.classList.add('hidden');
+            };
+            tempImg.onerror = () => {
+                skeletonEl.classList.add('hidden');
+                imgEl.classList.add('loaded');
+            };
+            tempImg.src = src;
+        }
+
+        // Intersection Observer para lazy load (solo carga imágenes visibles)
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    const src = img.getAttribute('data-src');
+                    const skeleton = img.previousElementSibling;
+                    if (src) {
+                        setupLazyImage(img, skeleton, src);
+                        imageObserver.unobserve(img);
+                    }
+                }
+            });
+        }, { rootMargin: '100px' });
 
         // ============================================
         // INICIALIZACIÓN
@@ -891,12 +1203,11 @@
             const SUPABASE_URL = 'https://nhqwwqfhazpzlksiftmd.supabase.co';
             const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ocXd3cWZoYXpwemxrc2lmdG1kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc1ODExMDYsImV4cCI6MjA4MzE1NzEwNn0.5GbOjyTy9Xa9_oB71pdNfiEdRtjxbixQ6khFzl4jn8o';
 
-            if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-                alert('ERROR: No se encontró la configuración de Supabase');
-                return;
-            }
-
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+            // Mostrar skeletons de inmediato
+            ['axl', 'frecuentes', 'varios'].forEach(cat => showSkeletons(cat));
+
             await loadAllLinks();
             setupEventListeners();
             switchView('axl');
@@ -906,29 +1217,18 @@
         // EVENT LISTENERS
         // ============================================
         function setupEventListeners() {
-            // Navegación principal
-            elements.nav.home.addEventListener('click', () => {
-                resetForm();
-                switchView('home');
-            });
-
-            // Logo - volver atrás
+            elements.nav.home.addEventListener('click', () => { resetForm(); switchView('home'); });
             elements.nav.logo.addEventListener('click', () => window.history.back());
             elements.nav.logo.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') { 
-                    e.preventDefault(); 
-                    window.history.back(); 
-                }
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.history.back(); }
             });
 
-            // Menú hamburguesa
             elements.nav.hamburger.addEventListener('click', (e) => {
                 e.stopPropagation();
                 elements.nav.hamburger.classList.toggle('active');
                 elements.nav.menu.classList.toggle('active');
             });
 
-            // Cerrar menú al hacer clic fuera
             document.addEventListener('click', (e) => {
                 if (!elements.nav.hamburger.contains(e.target) && !elements.nav.menu.contains(e.target)) {
                     elements.nav.hamburger.classList.remove('active');
@@ -936,7 +1236,6 @@
                 }
             });
 
-            // Items del menú (delegación de eventos)
             elements.nav.menu.addEventListener('click', (e) => {
                 const menuItem = e.target.closest('.menu-item');
                 if (menuItem) {
@@ -947,7 +1246,6 @@
                 }
             });
 
-            // Botones "Agregar Link" (delegación de eventos)
             document.addEventListener('click', (e) => {
                 const addBtn = e.target.closest('.btn-add');
                 if (addBtn) {
@@ -956,45 +1254,53 @@
                 }
             });
 
-            // Formulario
-            elements.form.cancel.addEventListener('click', () => {
-                resetForm();
-                switchView(currentView);
+            // Botones de reorden
+            document.addEventListener('click', (e) => {
+                const reorderBtn = e.target.closest('.btn-reorder');
+                if (reorderBtn) {
+                    const category = reorderBtn.getAttribute('data-category');
+                    toggleReorderMode(category);
+                }
             });
 
-            // Imagen
+            // Botones de guardar orden
+            document.addEventListener('click', (e) => {
+                const saveBtn = e.target.closest('.btn-save-order');
+                if (saveBtn) {
+                    const category = saveBtn.getAttribute('data-category');
+                    saveOrder(category);
+                }
+            });
+
+            elements.form.cancel.addEventListener('click', () => { resetForm(); switchView(currentView); });
+
             elements.image.upload.addEventListener('click', (e) => {
                 if (e.target !== elements.image.removeBtn && !elements.image.removeBtn.contains(e.target)) {
                     elements.image.input.click();
                 }
             });
+
             elements.image.input.addEventListener('change', handleImageChange);
             elements.image.removeBtn.addEventListener('click', removeImage);
-
-            // Submit del formulario
             elements.form.element.addEventListener('submit', handleSubmit);
         }
 
         // ============================================
-        // FUNCIONES DE NAVEGACIÓN
+        // NAVEGACIÓN
         // ============================================
         function switchView(view) {
             currentView = view;
-            
-            // Ocultar todas las vistas
             Object.values(elements.views).forEach(v => v.classList.remove('active'));
-            
-            // Desactivar navegación
             elements.nav.home.classList.remove('active');
             document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
 
-            // Activar vista correspondiente
             if (view === 'home') {
                 elements.views.home.classList.add('active');
                 elements.nav.home.classList.add('active');
             } else {
                 elements.views[view].classList.add('active');
-                document.querySelector(`[data-view="${view}"]`).classList.add('active');
+                const menuItem = document.querySelector(`[data-view="${view}"]`);
+                if (menuItem) menuItem.classList.add('active');
             }
         }
 
@@ -1005,12 +1311,11 @@
         }
 
         // ============================================
-        // MANEJO DE IMÁGENES
+        // IMAGEN
         // ============================================
         function handleImageChange(e) {
             const file = e.target.files[0];
             if (!file) return;
-
             currentImageFile = file;
             const reader = new FileReader();
             reader.onloadend = () => {
@@ -1049,20 +1354,23 @@
                 const { data, error } = await supabaseClient
                     .from(tableName)
                     .select('*')
+                    .order('sort_order', { ascending: true })
                     .order('created_at', { ascending: false });
 
                 if (error) throw error;
 
                 linksData[category] = data || [];
+                hideSkeletons(category);
                 renderLinks(category);
             } catch (error) {
                 console.error(`Error cargando links de ${category}:`, error);
+                hideSkeletons(category);
                 elements.containers[category].innerHTML = '<div class="empty-state"><p>Error al cargar los links</p></div>';
             }
         }
 
         // ============================================
-        // RENDERIZADO DE LINKS
+        // RENDERIZADO
         // ============================================
         function renderLinks(category) {
             const container = elements.containers[category];
@@ -1075,22 +1383,52 @@
 
             const grid = document.createElement('div');
             grid.className = 'links-grid';
+            grid.id = `grid-${category}`;
+
+            // Aplicar modo reorder si estaba activo
+            if (reorderState[category]) grid.classList.add('reorder-mode');
 
             links.forEach(link => {
-                grid.appendChild(createLinkCard(link, category));
+                const card = createLinkCard(link, category);
+                grid.appendChild(card);
+                // Observar imagen para lazy load
+                const img = card.querySelector('.card-img');
+                if (img) imageObserver.observe(img);
             });
 
             container.innerHTML = '';
             container.appendChild(grid);
+
+            // Configurar drag & drop
+            setupDragAndDrop(grid, category);
         }
 
         function createLinkCard(link, category) {
             const card = document.createElement('div');
             card.className = 'link-card';
-            
+            card.setAttribute('data-id', link.id);
+            card.setAttribute('draggable', 'true');
+
             card.innerHTML = `
+                <div class="drag-handle">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <circle cx="9" cy="5" r="1" fill="currentColor"/>
+                        <circle cx="15" cy="5" r="1" fill="currentColor"/>
+                        <circle cx="9" cy="12" r="1" fill="currentColor"/>
+                        <circle cx="15" cy="12" r="1" fill="currentColor"/>
+                        <circle cx="9" cy="19" r="1" fill="currentColor"/>
+                        <circle cx="15" cy="19" r="1" fill="currentColor"/>
+                    </svg>
+                </div>
                 <div class="link-image">
-                    <img src="${link.image_url}" alt="${link.title || 'Link'}">
+                    <div class="img-skeleton"></div>
+                    <img
+                        class="card-img"
+                        data-src="${link.image_url}"
+                        src=""
+                        alt="${link.title || 'Link'}"
+                        loading="lazy"
+                    >
                 </div>
                 <div class="link-content">
                     ${link.title ? `<h3 class="link-title">${link.title}</h3>` : ''}
@@ -1121,24 +1459,221 @@
                 </div>
             `;
 
-            // Delegación de eventos para las acciones
             card.addEventListener('click', (e) => {
+                if (reorderState[category]) return; // En modo reorder, ignorar clicks
                 const actionBtn = e.target.closest('[data-action]');
                 if (actionBtn) {
                     const action = actionBtn.getAttribute('data-action');
                     const id = actionBtn.getAttribute('data-id');
-                    const category = actionBtn.getAttribute('data-category');
-                    
-                    if (action === 'edit') editLink(id, category);
-                    if (action === 'delete') deleteLink(id, category);
+                    const cat = actionBtn.getAttribute('data-category');
+                    if (action === 'edit') editLink(id, cat);
+                    if (action === 'delete') deleteLink(id, cat);
                 }
             });
-            
+
             return card;
         }
 
         // ============================================
-        // SUBIR IMAGEN A SUPABASE
+        // DRAG & DROP - Mouse + Touch
+        // ============================================
+        function setupDragAndDrop(grid, category) {
+            let dragSrcCard = null;
+
+            // ---- DESKTOP: HTML5 Drag & Drop ----
+            grid.addEventListener('dragstart', (e) => {
+                if (!reorderState[category]) return;
+                dragSrcCard = e.target.closest('.link-card');
+                if (!dragSrcCard) return;
+                setTimeout(() => dragSrcCard.classList.add('dragging'), 0);
+                e.dataTransfer.effectAllowed = 'move';
+            });
+
+            grid.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                if (!reorderState[category]) return;
+                const target = e.target.closest('.link-card');
+                if (!target || target === dragSrcCard) return;
+
+                grid.querySelectorAll('.link-card').forEach(c => c.classList.remove('drag-over'));
+                target.classList.add('drag-over');
+
+                // Reordenar visualmente en tiempo real
+                const cards = [...grid.querySelectorAll('.link-card')];
+                const srcIdx = cards.indexOf(dragSrcCard);
+                const tgtIdx = cards.indexOf(target);
+
+                if (srcIdx < tgtIdx) {
+                    grid.insertBefore(dragSrcCard, target.nextSibling);
+                } else {
+                    grid.insertBefore(dragSrcCard, target);
+                }
+            });
+
+            grid.addEventListener('dragleave', (e) => {
+                const target = e.target.closest('.link-card');
+                if (target) target.classList.remove('drag-over');
+            });
+
+            grid.addEventListener('dragend', () => {
+                if (!reorderState[category]) return;
+                grid.querySelectorAll('.link-card').forEach(c => {
+                    c.classList.remove('dragging');
+                    c.classList.remove('drag-over');
+                });
+                dragSrcCard = null;
+            });
+
+            // ---- MOBILE: Touch Events ----
+            let touchCard = null;
+            let touchClone = null;
+            let touchOffsetX = 0;
+            let touchOffsetY = 0;
+            let lastTouchTarget = null;
+
+            grid.addEventListener('touchstart', (e) => {
+                if (!reorderState[category]) return;
+                touchCard = e.target.closest('.link-card');
+                if (!touchCard) return;
+
+                const touch = e.touches[0];
+                const rect = touchCard.getBoundingClientRect();
+                touchOffsetX = touch.clientX - rect.left;
+                touchOffsetY = touch.clientY - rect.top;
+
+                // Clonar la card para efecto visual
+                touchClone = touchCard.cloneNode(true);
+                touchClone.style.cssText = `
+                    position: fixed;
+                    width: ${rect.width}px;
+                    height: ${rect.height}px;
+                    top: ${rect.top}px;
+                    left: ${rect.left}px;
+                    opacity: 0.85;
+                    pointer-events: none;
+                    z-index: 9999;
+                    border-radius: 1rem;
+                    border: 2px solid #ea580c;
+                    box-shadow: 0 25px 50px rgba(234,88,12,0.3);
+                    transition: none;
+                    transform: scale(1.02);
+                `;
+                document.body.appendChild(touchClone);
+                touchCard.classList.add('dragging');
+                e.preventDefault();
+            }, { passive: false });
+
+            grid.addEventListener('touchmove', (e) => {
+                if (!reorderState[category] || !touchCard || !touchClone) return;
+                e.preventDefault();
+
+                const touch = e.touches[0];
+                touchClone.style.left = `${touch.clientX - touchOffsetX}px`;
+                touchClone.style.top = `${touch.clientY - touchOffsetY}px`;
+
+                // Encontrar card bajo el dedo
+                touchClone.style.display = 'none';
+                const el = document.elementFromPoint(touch.clientX, touch.clientY);
+                touchClone.style.display = '';
+
+                const targetCard = el ? el.closest('.link-card') : null;
+
+                if (lastTouchTarget && lastTouchTarget !== touchCard) {
+                    lastTouchTarget.classList.remove('drag-over');
+                }
+
+                if (targetCard && targetCard !== touchCard) {
+                    targetCard.classList.add('drag-over');
+                    lastTouchTarget = targetCard;
+
+                    const cards = [...grid.querySelectorAll('.link-card')];
+                    const srcIdx = cards.indexOf(touchCard);
+                    const tgtIdx = cards.indexOf(targetCard);
+
+                    if (srcIdx < tgtIdx) {
+                        grid.insertBefore(touchCard, targetCard.nextSibling);
+                    } else {
+                        grid.insertBefore(touchCard, targetCard);
+                    }
+                }
+            }, { passive: false });
+
+            grid.addEventListener('touchend', () => {
+                if (!reorderState[category]) return;
+                if (touchClone) { touchClone.remove(); touchClone = null; }
+                if (touchCard) { touchCard.classList.remove('dragging'); touchCard = null; }
+                if (lastTouchTarget) { lastTouchTarget.classList.remove('drag-over'); lastTouchTarget = null; }
+            });
+        }
+
+        // ============================================
+        // MODO REORDEN
+        // ============================================
+        function toggleReorderMode(category) {
+            reorderState[category] = !reorderState[category];
+
+            const btn = document.getElementById(`reorderBtn-${category}`);
+            const banner = document.getElementById(`reorderBanner-${category}`);
+            const grid = document.getElementById(`grid-${category}`);
+
+            btn.classList.toggle('active', reorderState[category]);
+            banner.classList.toggle('active', reorderState[category]);
+
+            if (grid) {
+                grid.classList.toggle('reorder-mode', reorderState[category]);
+            }
+        }
+
+        // ============================================
+        // GUARDAR ORDEN EN SUPABASE
+        // ============================================
+        async function saveOrder(category) {
+            const grid = document.getElementById(`grid-${category}`);
+            if (!grid) return;
+
+            const saveBtn = document.getElementById(`saveOrderBtn-${category}`);
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Guardando...';
+
+            const cards = [...grid.querySelectorAll('.link-card')];
+            const tableName = `links_${category}`;
+
+            try {
+                // Actualizar sort_order de cada card según su posición actual
+                const updates = cards.map((card, index) => ({
+                    id: card.getAttribute('data-id'),
+                    sort_order: index
+                }));
+
+                // Actualizar cada registro (upsert en batch)
+                const promises = updates.map(({ id, sort_order }) =>
+                    supabaseClient
+                        .from(tableName)
+                        .update({ sort_order })
+                        .eq('id', id)
+                );
+
+                await Promise.all(promises);
+
+                // Actualizar el array local con el nuevo orden
+                const newOrder = cards.map(card => {
+                    return linksData[category].find(l => l.id === card.getAttribute('data-id'));
+                }).filter(Boolean);
+                linksData[category] = newOrder;
+
+                showToast('✓ Orden guardado');
+                toggleReorderMode(category);
+            } catch (error) {
+                console.error('Error guardando orden:', error);
+                showToast('✗ Error al guardar el orden');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Guardar orden';
+            }
+        }
+
+        // ============================================
+        // SUBIR IMAGEN
         // ============================================
         async function uploadImage(file) {
             const fileName = `${Date.now()}_${file.name}`;
@@ -1156,18 +1691,16 @@
         }
 
         // ============================================
-        // CRUD: CREAR/ACTUALIZAR
+        // CRUD: CREAR / ACTUALIZAR
         // ============================================
         async function handleSubmit(e) {
             e.preventDefault();
-            
-            // Validar imagen (solo si es nuevo link)
+
             if (!currentImageFile && !isEditing) {
                 alert('Por favor selecciona una imagen');
                 return;
             }
 
-            // Validar que haya imagen (nueva o existente) al editar
             if (isEditing && !currentImageFile && !currentImageUrl) {
                 alert('Por favor selecciona una imagen');
                 return;
@@ -1181,17 +1714,11 @@
             const category = elements.form.category.value;
 
             try {
-                let imageUrl = currentImageUrl; // Mantener URL existente
-                
-                // Solo subir nueva imagen si hay archivo nuevo
-                if (currentImageFile) {
-                    imageUrl = await uploadImage(currentImageFile);
-                }
+                let imageUrl = currentImageUrl;
+                if (currentImageFile) imageUrl = await uploadImage(currentImageFile);
 
                 let finalUrl = elements.form.url.value.trim();
-                if (!/^https?:\/\//i.test(finalUrl)) {
-                    finalUrl = 'https://' + finalUrl;
-                }
+                if (!/^https?:\/\//i.test(finalUrl)) finalUrl = 'https://' + finalUrl;
 
                 const linkData = {
                     title: elements.form.titleInput.value.trim() || null,
@@ -1202,17 +1729,10 @@
                 const tableName = `links_${category}`;
 
                 if (isEditing && editingId) {
-                    const { error } = await supabaseClient
-                        .from(tableName)
-                        .update(linkData)
-                        .eq('id', editingId);
-
+                    const { error } = await supabaseClient.from(tableName).update(linkData).eq('id', editingId);
                     if (error) throw error;
                 } else {
-                    const { error } = await supabaseClient
-                        .from(tableName)
-                        .insert([linkData]);
-
+                    const { error } = await supabaseClient.from(tableName).insert([linkData]);
                     if (error) throw error;
                 }
 
@@ -1235,8 +1755,8 @@
             isEditing = true;
             editingId = id;
             editingCategory = category;
-            currentImageUrl = link.image_url; // Guardar URL existente
-            
+            currentImageUrl = link.image_url;
+
             elements.form.category.value = category;
             elements.form.titleInput.value = link.title || '';
             elements.form.url.value = link.url;
@@ -1253,7 +1773,6 @@
                 Modificar Link
             `;
             elements.form.submitText.textContent = 'Actualizar';
-
             switchView('home');
         }
 
@@ -1265,13 +1784,8 @@
 
             try {
                 const tableName = `links_${category}`;
-                const { error } = await supabaseClient
-                    .from(tableName)
-                    .delete()
-                    .eq('id', id);
-
+                const { error } = await supabaseClient.from(tableName).delete().eq('id', id);
                 if (error) throw error;
-
                 await loadLinks(category);
             } catch (error) {
                 console.error('Error eliminando link:', error);
@@ -1280,7 +1794,7 @@
         }
 
         // ============================================
-        // RESETEAR FORMULARIO
+        // RESET FORMULARIO
         // ============================================
         function resetForm() {
             isEditing = false;
@@ -1288,7 +1802,7 @@
             editingCategory = null;
             currentImageFile = null;
             currentImageUrl = null;
-            
+
             elements.form.titleInput.value = '';
             elements.form.url.value = '';
             elements.image.preview.style.display = 'none';
@@ -1308,7 +1822,7 @@
         }
 
         // ============================================
-        // INICIAR APLICACIÓN
+        // ARRANCAR
         // ============================================
         window.addEventListener('DOMContentLoaded', init);
     </script>

@@ -1,15 +1,16 @@
 {
-  "name": "Personallinkmanager",
-  "short_name": "LinkManager",
+  "name": "Personal Management Links",
+  "short_name": "MyLinks",
   "start_url": "https://flavioalejandrov24-lang.github.io/Personalmanagmentlinks/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "theme_color": "#ffffff",
   "icons": [
     {
-      "src": "https://www.pwabuilder.com/assets/icons/icon_192.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "src": "linkicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }

@@ -50,15 +50,18 @@
             align-items: center;
             justify-content: space-between;
             gap: 0.5rem;
+            position: relative;
         }
 
-        /* Grupo izquierdo: flecha retroceso + título segmento */
+        /* Grupo izquierdo: flecha retroceso */
         .nav-left {
             display: flex;
             align-items: center;
             gap: 0.6rem;
+            z-index: 1;
         }
 
+        /* Título centrado absolutamente en el nav */
         .nav-segment-title {
             font-family: 'Rajdhani', -apple-system, sans-serif;
             font-size: 1.05rem;
@@ -70,6 +73,9 @@
             pointer-events: none;
             user-select: none;
             text-shadow: 0 0 18px rgba(249, 115, 22, 0.45);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         /* Grupo derecho: reorder + add + hamburger */
@@ -912,21 +918,120 @@
                 min-width: 80px;
             }
         }
+
+        /* ============================================ */
+        /* LIGHTBOX — visor de imagen ampliada          */
+        /* ============================================ */
+        .lightbox-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(8px);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .lightbox-img {
+            max-width: 92vw;
+            max-height: 80vh;
+            border-radius: 12px;
+            object-fit: contain;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+            transform: scale(0.92);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .lightbox-overlay.active .lightbox-img {
+            transform: scale(1);
+        }
+
+        .lightbox-close {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            width: 42px;
+            height: 42px;
+            background: rgba(239, 68, 68, 0.85);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.2s;
+            z-index: 100000;
+        }
+
+        .lightbox-close:hover {
+            background: #ef4444;
+            transform: scale(1.1);
+        }
+
+        .lightbox-download {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(34, 197, 94, 0.9);
+            border: none;
+            border-radius: 99px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            transition: all 0.2s;
+            z-index: 100000;
+            text-decoration: none;
+        }
+
+        .lightbox-download:hover {
+            background: #22c55e;
+            transform: translateX(-50%) scale(1.05);
+        }
+
+        .lightbox-download svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Imagen miniatura clickeable */
+        .link-image {
+            cursor: zoom-in;
+        }
     </style>
 </head>
 <body>
     <!-- NAVEGACIÓN PRINCIPAL -->
     <nav>
         <div class="nav-container">
-            <!-- Izquierda: flecha retroceso + título segmento -->
+            <!-- Izquierda: flecha retroceso -->
             <div class="nav-left">
                 <button id="logoIcon" class="logo-icon" aria-label="Volver">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" stroke-width="2.5" aria-hidden="true">
                         <polyline points="15 18 9 12 15 6"></polyline>
                     </svg>
                 </button>
-                <span class="nav-segment-title" id="navSegmentTitle">Axel Links</span>
             </div>
+            <!-- Centro: título centrado absolutamente -->
+            <span class="nav-segment-title" id="navSegmentTitle">Axel Links</span>
 
             <!-- Derecha: reordenar + añadir + hamburger -->
             <div class="nav-right">
@@ -1110,10 +1215,41 @@
 
         <!-- VISTA: TODO LINKS (mezcla de axl + frecuentes) -->
         <div id="todosView" class="view">
+            <div class="reorder-banner" id="reorderBanner-todos">
+                <div class="reorder-banner-info">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 9l4-4 4 4M9 5v14M19 15l-4 4-4-4M15 19V5"/>
+                    </svg>
+                    <span>Arrastra las cards para reordenarlas</span>
+                </div>
+                <div class="reorder-banner-actions">
+                    <button class="btn-cancel-order" data-category="todos" id="cancelOrderBtn-todos">Cancelar</button>
+                    <button class="btn-save-order" data-category="todos" id="saveOrderBtn-todos">Guardar orden</button>
+                </div>
+            </div>
             <div id="todosContainer">
                 <div class="skeleton-grid" id="skeletonTodos"></div>
             </div>
         </div>
+    </div>
+
+    <!-- Lightbox visor de imagen -->
+    <div class="lightbox-overlay" id="lightboxOverlay">
+        <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
+        <img class="lightbox-img" id="lightboxImg" src="" alt="Imagen ampliada">
+        <a class="lightbox-download" id="lightboxDownload" href="#" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Descargar
+        </a>
     </div>
 
     <!-- Toast de notificación -->
@@ -1128,7 +1264,7 @@
         let supabaseClient;
         const linksData = { axl: [], frecuentes: [], varios: [] };
         // Snapshot del orden original para poder cancelar
-        const originalOrder = { axl: [], frecuentes: [], varios: [] };
+        const originalOrder = { axl: [], frecuentes: [], varios: [], todos: [] };
         let isEditing = false;
         let editingId = null;
         let editingCategory = null;
@@ -1137,7 +1273,7 @@
         let currentView = 'axl';
         let lastCatalogView = 'axl'; // Último catálogo visitado (para retroceso y cancelar)
 
-        const reorderState = { axl: false, frecuentes: false, varios: false };
+        const reorderState = { axl: false, frecuentes: false, varios: false, todos: false };
 
         // Nombres de los segmentos para el título del nav
         const segmentTitles = {
@@ -1393,8 +1529,9 @@
                 elements.views.todos.classList.add('active');
                 const menuItem = document.querySelector(`[data-view="todos"]`);
                 if (menuItem) menuItem.classList.add('active');
-                // En Todo Links ocultamos reorder (no aplica en vista mezclada)
-                elements.nav.reorderBtn.style.display = 'none';
+                // Mostrar reorder también en Todo Links
+                elements.nav.reorderBtn.style.display = 'flex';
+                elements.nav.reorderBtn.classList.toggle('active', !!reorderState['todos']);
                 renderTodosView();
             } else {
                 elements.views[view].classList.add('active');
@@ -1411,7 +1548,6 @@
         // ============================================
         function renderTodosView() {
             const container = elements.containers.todos;
-            // Mezcla: axl primero, luego frecuentes; cada card lleva su categoría original
             const allLinks = [
                 ...linksData.axl.map(l => ({ ...l, _cat: 'axl' })),
                 ...linksData.frecuentes.map(l => ({ ...l, _cat: 'frecuentes' }))
@@ -1426,6 +1562,8 @@
             grid.className = 'links-grid';
             grid.id = 'grid-todos';
 
+            if (reorderState['todos']) grid.classList.add('reorder-mode');
+
             const fragment = document.createDocumentFragment();
             allLinks.forEach(link => {
                 const card = createLinkCard(link, link._cat);
@@ -1437,6 +1575,8 @@
 
             container.innerHTML = '';
             container.appendChild(grid);
+
+            setupDragAndDrop(grid, 'todos');
         }
 
         function openFormForCategory(category) {
@@ -1774,7 +1914,7 @@
 
             // Sincronizar botón del nav
             elements.nav.reorderBtn.classList.toggle('active', reorderState[category]);
-            banner.classList.toggle('active', reorderState[category]);
+            if (banner) banner.classList.toggle('active', reorderState[category]);
 
             if (grid) {
                 grid.classList.toggle('reorder-mode', reorderState[category]);
@@ -1782,7 +1922,15 @@
 
             // Guardar snapshot del orden actual para poder cancelar
             if (reorderState[category]) {
-                originalOrder[category] = linksData[category].map(l => l.id);
+                if (category === 'todos') {
+                    // Para todos, snapshot de los ids del grid combinado
+                    const todosGrid = document.getElementById('grid-todos');
+                    if (todosGrid) {
+                        originalOrder['todos'] = [...todosGrid.querySelectorAll('.link-card')].map(c => c.getAttribute('data-id'));
+                    }
+                } else {
+                    originalOrder[category] = linksData[category].map(l => l.id);
+                }
             }
         }
 
@@ -2012,6 +2160,54 @@
             `;
             elements.form.submitText.textContent = 'Guardar';
         }
+
+        // ============================================
+        // LIGHTBOX — visor de imagen ampliada
+        // ============================================
+        function openLightbox(src) {
+            const overlay = document.getElementById('lightboxOverlay');
+            const img = document.getElementById('lightboxImg');
+            const downloadBtn = document.getElementById('lightboxDownload');
+
+            img.src = src;
+            downloadBtn.href = src;
+            // Nombre de descarga basado en la URL
+            const fileName = src.split('/').pop().split('?')[0] || 'imagen.jpg';
+            downloadBtn.setAttribute('download', fileName);
+
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const overlay = document.getElementById('lightboxOverlay');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                document.getElementById('lightboxImg').src = '';
+            }, 300);
+        }
+
+        // Eventos del lightbox
+        document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+        document.getElementById('lightboxOverlay').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('lightboxOverlay')) closeLightbox();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        // Delegación de clicks en imágenes de cards
+        document.addEventListener('click', (e) => {
+            const linkImage = e.target.closest('.link-image');
+            if (linkImage) {
+                const img = linkImage.querySelector('.card-img');
+                if (img && img.src && img.src !== window.location.href) {
+                    e.stopPropagation();
+                    openLightbox(img.src);
+                }
+            }
+        });
 
         // ============================================
         // ARRANCAR

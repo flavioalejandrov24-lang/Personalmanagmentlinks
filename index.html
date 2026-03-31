@@ -49,10 +49,22 @@
             gap: 0.5rem;
         }
 
-        /* Grupo izquierdo: flecha retroceso */
+        /* Grupo izquierdo: flecha retroceso + título segmento */
         .nav-left {
             display: flex;
             align-items: center;
+            gap: 0.6rem;
+        }
+
+        .nav-segment-title {
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: #fb923c99;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
         }
 
         /* Grupo derecho: reorder + add + hamburger */
@@ -557,7 +569,7 @@
         .links-grid {
             display: flex;
             flex-direction: column;
-            gap: 0.6rem;
+            gap: 1rem;
             padding: 0 1rem;
         }
 
@@ -745,9 +757,11 @@
         .link-actions {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 0;
+            gap: 0.5rem;
             width: 100%;
             border-top: 1px solid #1f2937;
+            padding: 0.5rem;
+            background: #111;
         }
 
         .link-actions.no-title { border-top: 1px solid #1f2937; }
@@ -759,51 +773,59 @@
             flex-direction: row;
             align-items: center;
             justify-content: center;
-            gap: 0.3rem;
-            padding: 0.5rem 0.4rem;
-            border-radius: 0;
+            gap: 0.35rem;
+            padding: 0.55rem 0.4rem;
+            border-radius: 8px;
             border: none;
-            border-right: 1px solid #1f2937;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.25s ease;
             font-size: 0.72rem;
             font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 0.02em;
+            letter-spacing: 0.04em;
         }
 
         .action-btn:last-child { border-right: none; }
         .action-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
 
         .action-link {
-            background: rgba(34, 197, 94, 0.12);
+            background: rgba(34, 197, 94, 0.14);
             color: #22c55e;
             text-decoration: none;
+            border: 1px solid rgba(34, 197, 94, 0.25);
         }
 
         .action-link:hover {
             background: #22c55e;
             color: white;
+            border-color: #22c55e;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
         }
 
         .action-edit {
-            background: rgba(59, 130, 246, 0.12);
+            background: rgba(59, 130, 246, 0.14);
             color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.25);
         }
 
         .action-edit:hover {
             background: #3b82f6;
             color: white;
+            border-color: #3b82f6;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
 
         .action-delete {
-            background: rgba(239, 68, 68, 0.12);
+            background: rgba(239, 68, 68, 0.14);
             color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.25);
         }
 
         .action-delete:hover {
             background: #ef4444;
             color: white;
+            border-color: #ef4444;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
         }
 
         /* ============================================ */
@@ -888,13 +910,14 @@
     <!-- NAVEGACIÓN PRINCIPAL -->
     <nav>
         <div class="nav-container">
-            <!-- Izquierda: flecha retroceso -->
+            <!-- Izquierda: flecha retroceso + título segmento -->
             <div class="nav-left">
                 <button id="logoIcon" class="logo-icon" aria-label="Volver">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" stroke-width="2.5" aria-hidden="true">
                         <polyline points="15 18 9 12 15 6"></polyline>
                     </svg>
                 </button>
+                <span class="nav-segment-title" id="navSegmentTitle">Axel Links</span>
             </div>
 
             <!-- Derecha: reordenar + añadir + hamburger -->
@@ -931,22 +954,22 @@
                     <rect x="14" y="14" width="7" height="7"/>
                     <rect x="3" y="14" width="7" height="7"/>
                 </svg>
-                Catálogo Axl
+                Axel Links
             </div>
             <div class="menu-item" data-view="frecuentes">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M12 2L2 7l10 5 10-5-10-5z"/>
                     <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
                 </svg>
-                Links Frecuentes
+                Fav Links
             </div>
-            <div class="menu-item" data-view="varios">
+            <div class="menu-item" data-view="todos">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="10"/>
                     <line x1="12" y1="8" x2="12" y2="12"/>
                     <line x1="12" y1="16" x2="12.01" y2="16"/>
                 </svg>
-                Varios Links
+                Todo Links
             </div>
         </div>
     </nav>
@@ -986,8 +1009,8 @@
                     <div class="form-group">
                         <label class="form-label"><span>Categoría</span></label>
                         <select class="form-select" id="categorySelect" required>
-                            <option value="axl">Catálogo Axl</option>
-                            <option value="frecuentes">Links Frecuentes</option>
+                            <option value="axl">Axel Links</option>
+                            <option value="frecuentes">Fav Links</option>
                             <option value="varios">Varios Links</option>
                         </select>
                     </div>
@@ -1058,7 +1081,7 @@
             </div>
         </div>
 
-        <!-- VISTA: VARIOS LINKS -->
+        <!-- VISTA: VARIOS LINKS (renombrado a todos) -->
         <div id="variosView" class="view">
             <div class="reorder-banner" id="reorderBanner-varios">
                 <div class="reorder-banner-info">
@@ -1074,6 +1097,13 @@
             </div>
             <div id="variosContainer">
                 <div class="skeleton-grid" id="skeletonVarios"></div>
+            </div>
+        </div>
+
+        <!-- VISTA: TODO LINKS (mezcla de axl + frecuentes) -->
+        <div id="todosView" class="view">
+            <div id="todosContainer">
+                <div class="skeleton-grid" id="skeletonTodos"></div>
             </div>
         </div>
     </div>
@@ -1101,6 +1131,15 @@
 
         const reorderState = { axl: false, frecuentes: false, varios: false };
 
+        // Nombres de los segmentos para el título del nav
+        const segmentTitles = {
+            axl: 'Axel Links',
+            frecuentes: 'Fav Links',
+            todos: 'Todo Links',
+            varios: 'Varios Links',
+            home: ''
+        };
+
         // ============================================
         // DOM ELEMENTS
         // ============================================
@@ -1109,19 +1148,22 @@
                 home: document.getElementById('homeView'),
                 axl: document.getElementById('axlView'),
                 frecuentes: document.getElementById('frecuentesView'),
-                varios: document.getElementById('variosView')
+                varios: document.getElementById('variosView'),
+                todos: document.getElementById('todosView')
             },
             containers: {
                 axl: document.getElementById('axlContainer'),
                 frecuentes: document.getElementById('frecuentesContainer'),
-                varios: document.getElementById('variosContainer')
+                varios: document.getElementById('variosContainer'),
+                todos: document.getElementById('todosContainer')
             },
             nav: {
                 logo: document.getElementById('logoIcon'),
                 reorderBtn: document.getElementById('navReorderBtn'),
                 addBtn: document.getElementById('navAddBtn'),
                 hamburger: document.getElementById('hamburgerBtn'),
-                menu: document.getElementById('menuDropdown')
+                menu: document.getElementById('menuDropdown'),
+                segmentTitle: document.getElementById('navSegmentTitle')
             },
             form: {
                 element: document.getElementById('linkForm'),
@@ -1158,7 +1200,8 @@
             const skeletonMap = {
                 axl: 'skeletonAxl',
                 frecuentes: 'skeletonFrecuentes',
-                varios: 'skeletonVarios'
+                varios: 'skeletonVarios',
+                todos: 'skeletonTodos'
             };
             const skeletonEl = document.getElementById(skeletonMap[category]);
             if (!skeletonEl) return;
@@ -1188,7 +1231,8 @@
             const skeletonMap = {
                 axl: 'skeletonAxl',
                 frecuentes: 'skeletonFrecuentes',
-                varios: 'skeletonVarios'
+                varios: 'skeletonVarios',
+                todos: 'skeletonTodos'
             };
             const skeletonEl = document.getElementById(skeletonMap[category]);
             if (skeletonEl) skeletonEl.style.display = 'none';
@@ -1325,26 +1369,71 @@
         function switchView(view) {
             currentView = view;
             if (view !== 'home') lastCatalogView = view;
-            Object.values(elements.views).forEach(v => v.classList.remove('active'));
+            Object.values(elements.views).forEach(v => v && v.classList.remove('active'));
             document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+
+            // Actualizar título del segmento en nav
+            if (elements.nav.segmentTitle) {
+                elements.nav.segmentTitle.textContent = segmentTitles[view] || '';
+                elements.nav.segmentTitle.style.display = view === 'home' ? 'none' : 'block';
+            }
 
             if (view === 'home') {
                 elements.views.home.classList.add('active');
-                // Ocultar reorder en formulario
                 elements.nav.reorderBtn.style.display = 'none';
+            } else if (view === 'todos') {
+                elements.views.todos.classList.add('active');
+                const menuItem = document.querySelector(`[data-view="todos"]`);
+                if (menuItem) menuItem.classList.add('active');
+                elements.nav.reorderBtn.style.display = 'none'; // Todo Links no tiene reorder propio
+                renderTodosView();
             } else {
                 elements.views[view].classList.add('active');
                 const menuItem = document.querySelector(`[data-view="${view}"]`);
                 if (menuItem) menuItem.classList.add('active');
-                // Mostrar reorder y sincronizar su estado activo
                 elements.nav.reorderBtn.style.display = 'flex';
                 elements.nav.reorderBtn.classList.toggle('active', !!reorderState[view]);
             }
         }
 
+        // ============================================
+        // RENDERIZAR VISTA TODO LINKS (mezcla axl + frecuentes)
+        // ============================================
+        function renderTodosView() {
+            const container = elements.containers.todos;
+            // Mezcla: axl primero, luego frecuentes; cada card lleva su categoría original
+            const allLinks = [
+                ...linksData.axl.map(l => ({ ...l, _cat: 'axl' })),
+                ...linksData.frecuentes.map(l => ({ ...l, _cat: 'frecuentes' }))
+            ];
+
+            if (allLinks.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>No hay links aún.</p></div>';
+                return;
+            }
+
+            const grid = document.createElement('div');
+            grid.className = 'links-grid';
+            grid.id = 'grid-todos';
+
+            const fragment = document.createDocumentFragment();
+            allLinks.forEach(link => {
+                const card = createLinkCard(link, link._cat);
+                fragment.appendChild(card);
+                const img = card.querySelector('.card-img');
+                if (img) imageObserver.observe(img);
+            });
+            grid.appendChild(fragment);
+
+            container.innerHTML = '';
+            container.appendChild(grid);
+        }
+
         function openFormForCategory(category) {
             resetForm();
-            elements.form.category.value = category;
+            // Si estamos en "todos", abrir formulario para axl por defecto
+            const formCategory = (category === 'todos') ? 'axl' : category;
+            elements.form.category.value = formCategory;
             switchView('home');
         }
 
@@ -1447,7 +1536,7 @@
             card.setAttribute('data-id', link.id);
             card.setAttribute('draggable', 'true');
 
-            const categoryLabels = { axl: 'Catálogo Axl', frecuentes: 'Links Frecuentes', varios: 'Varios Links' };
+            const categoryLabels = { axl: 'Axel Links', frecuentes: 'Fav Links', varios: 'Varios Links' };
             const categoryLabel = categoryLabels[category] || category;
 
             // Truncar URL para mostrar
@@ -1829,6 +1918,8 @@
 
                 resetForm();
                 await loadLinks(category);
+                // Si estamos en todos, refrescar esa vista también
+                if (currentView === 'todos') renderTodosView();
                 switchView(category);
             } catch (error) {
                 console.error('Error guardando link:', error);
@@ -1877,6 +1968,7 @@
                 const { error } = await supabaseClient.from(tableName).delete().eq('id', id);
                 if (error) throw error;
                 await loadLinks(category);
+                if (currentView === 'todos') renderTodosView();
             } catch (error) {
                 console.error('Error eliminando link:', error);
                 alert('Error al eliminar el link: ' + error.message);

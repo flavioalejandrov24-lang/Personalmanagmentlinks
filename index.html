@@ -35,23 +35,31 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            margin-bottom: 3rem;
+            margin-bottom: 1.25rem;
         }
 
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1.5rem;
-            height: 80px;
+            padding: 0 1rem;
+            height: 64px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 0.5rem;
         }
 
-        .nav-logo {
+        /* Grupo izquierdo: flecha retroceso */
+        .nav-left {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+        }
+
+        /* Grupo derecho: reorder + add + hamburger */
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .logo-icon {
@@ -62,49 +70,75 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 900;
-            font-style: italic;
-            box-shadow: 0 10px 25px rgba(234, 88, 12, 0.3);
-            cursor: pointer;
-        }
-
-        .nav-title {
-            font-size: 1.25rem;
-            font-weight: 900;
-            letter-spacing: -0.05em;
-            text-transform: uppercase;
-        }
-
-        .nav-buttons {
-            display: flex;
-            gap: 0.75rem;
-            align-items: center;
-        }
-
-        .nav-btn {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.625rem 1.25rem;
-            border-radius: 12px;
-            border: none;
-            font-weight: 700;
-            font-size: 0.875rem;
+            box-shadow: 0 6px 20px rgba(234, 88, 12, 0.35);
             cursor: pointer;
             transition: all 0.3s;
-            background: transparent;
-            color: #9ca3af;
+            border: none;
+            flex-shrink: 0;
         }
 
-        .nav-btn:hover {
-            color: white;
-            background: #1f2937;
+        .logo-icon:hover { background: #f97316; }
+
+        /* Botón reordenar en nav — morado */
+        .nav-reorder-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(139, 92, 246, 0.15);
+            color: rgba(167, 139, 250, 0.9);
+            border-radius: 10px;
+            border: 1px solid rgba(139, 92, 246, 0.35);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
         }
 
-        .nav-btn.active {
-            color: #ea580c;
-            background: rgba(234, 88, 12, 0.1);
+        .nav-reorder-btn:hover {
+            background: rgba(139, 92, 246, 0.3);
+            border-color: rgba(139, 92, 246, 0.6);
+            color: #c4b5fd;
         }
+
+        .nav-reorder-btn.active {
+            background: rgba(109, 40, 217, 0.4);
+            border-color: rgba(139, 92, 246, 0.7);
+            color: #ddd6fe;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .nav-reorder-btn svg {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .nav-reorder-btn.active svg { transform: rotate(180deg); }
+
+        /* Botón añadir — verde traslúcido */
+        .nav-add-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+            border-radius: 10px;
+            border: 1px solid rgba(34, 197, 94, 0.35);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .nav-add-btn:hover {
+            background: rgba(34, 197, 94, 0.28);
+            border-color: rgba(34, 197, 94, 0.6);
+            color: #4ade80;
+        }
+
+        .nav-add-btn svg { width: 20px; height: 20px; }
 
         /* ============================================ */
         /* HAMBURGER — 3 líneas (menú de navegación)   */
@@ -380,89 +414,6 @@
         }
 
         .btn-cancel:hover { background: #ef4444; }
-
-        /* ============================================ */
-        /* CATALOG HEADER */
-        /* ============================================ */
-        .catalog-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2.5rem;
-            padding: 0 1rem;
-        }
-
-        .catalog-title {
-            font-size: 1.875rem;
-            font-weight: 900;
-        }
-
-        .catalog-title span { color: #ea580c; }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        /* Botón modo reorder — flecha morada hacia arriba */
-        .btn-reorder {
-            background: rgba(139, 92, 246, 0.15);
-            color: rgba(167, 139, 250, 0.9);
-            padding: 0.5rem;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(139, 92, 246, 0.35);
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 40px;
-            height: 40px;
-        }
-
-        .btn-reorder:hover {
-            background: rgba(139, 92, 246, 0.3);
-            border-color: rgba(139, 92, 246, 0.6);
-            color: #c4b5fd;
-        }
-
-        .btn-reorder.active {
-            background: rgba(109, 40, 217, 0.4);
-            border-color: rgba(139, 92, 246, 0.7);
-            color: #ddd6fe;
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
-        }
-
-        .btn-reorder svg {
-            width: 20px;
-            height: 20px;
-            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        /* Cuando está activo, la flecha rota 180° */
-        .btn-reorder.active svg {
-            transform: rotate(180deg);
-        }
-
-        .btn-add {
-            background: #ea580c;
-            color: white;
-            padding: 0.5rem 1.5rem;
-            border-radius: 9999px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 10px 25px rgba(234, 88, 12, 0.3);
-        }
-
-        .btn-add:hover { background: #f97316; }
 
         /* ============================================ */
         /* BANNER REORDER — morado traslúcido           */
@@ -919,8 +870,6 @@
         }
 
         @media (max-width: 640px) {
-            .nav-title { display: none; }
-            .nav-btn span { display: none; }
 
             .menu-dropdown {
                 right: 1rem;
@@ -939,24 +888,33 @@
     <!-- NAVEGACIÓN PRINCIPAL -->
     <nav>
         <div class="nav-container">
-            <div class="nav-logo">
-                <div id="logoIcon" class="logo-icon" role="button" tabindex="0" aria-label="Volver">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <!-- Izquierda: flecha retroceso -->
+            <div class="nav-left">
+                <button id="logoIcon" class="logo-icon" aria-label="Volver">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" stroke-width="2.5" aria-hidden="true">
                         <polyline points="15 18 9 12 15 6"></polyline>
                     </svg>
-                </div>
-                <h1 class="nav-title">Links Administrator</h1>
+                </button>
             </div>
-            <div class="nav-buttons">
-                <button class="nav-btn" id="navHome">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                        <polyline points="9 22 9 12 15 12 15 22"/>
+
+            <!-- Derecha: reordenar + añadir + hamburger -->
+            <div class="nav-right">
+                <!-- Botón reordenar (se activa según la vista actual) -->
+                <button class="nav-reorder-btn" id="navReorderBtn" aria-label="Reordenar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="18 15 12 9 6 15"></polyline>
                     </svg>
-                    <span>Inicio</span>
                 </button>
 
-                <!-- BOTÓN HAMBURGUESA (3 líneas) -->
+                <!-- Botón añadir link — verde -->
+                <button class="nav-add-btn" id="navAddBtn" aria-label="Agregar link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                </button>
+
+                <!-- Hamburger -->
                 <button class="hamburger-btn" id="hamburgerBtn" aria-label="Menú">
                     <span></span>
                     <span></span>
@@ -1064,24 +1022,6 @@
 
         <!-- VISTA: CATÁLOGO AXL -->
         <div id="axlView" class="view active">
-            <div class="catalog-header">
-                <h2 class="catalog-title">Catálogo <span>Axl</span></h2>
-                <div class="header-right">
-                    <button class="btn-reorder" data-category="axl" id="reorderBtn-axl">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="18 15 12 9 6 15"></polyline>
-                        </svg>
-                    </button>
-                    <button class="btn-add" data-category="axl">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="5" x2="12" y2="19"/>
-                            <line x1="5" y1="12" x2="19" y2="12"/>
-                        </svg>
-                        Agregar Link
-                    </button>
-                </div>
-            </div>
-            <!-- BANNER REORDER AXL -->
             <div class="reorder-banner" id="reorderBanner-axl">
                 <div class="reorder-banner-info">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1101,24 +1041,6 @@
 
         <!-- VISTA: LINKS FRECUENTES -->
         <div id="frecuentesView" class="view">
-            <div class="catalog-header">
-                <h2 class="catalog-title">Links <span>Frecuentes</span></h2>
-                <div class="header-right">
-                    <button class="btn-reorder" data-category="frecuentes" id="reorderBtn-frecuentes">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="18 15 12 9 6 15"></polyline>
-                        </svg>
-                    </button>
-                    <button class="btn-add" data-category="frecuentes">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="5" x2="12" y2="19"/>
-                            <line x1="5" y1="12" x2="19" y2="12"/>
-                        </svg>
-                        Agregar Link
-                    </button>
-                </div>
-            </div>
-            <!-- BANNER REORDER FRECUENTES -->
             <div class="reorder-banner" id="reorderBanner-frecuentes">
                 <div class="reorder-banner-info">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1138,24 +1060,6 @@
 
         <!-- VISTA: VARIOS LINKS -->
         <div id="variosView" class="view">
-            <div class="catalog-header">
-                <h2 class="catalog-title">Varios <span>Links</span></h2>
-                <div class="header-right">
-                    <button class="btn-reorder" data-category="varios" id="reorderBtn-varios">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="18 15 12 9 6 15"></polyline>
-                        </svg>
-                    </button>
-                    <button class="btn-add" data-category="varios">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="5" x2="12" y2="19"/>
-                            <line x1="5" y1="12" x2="19" y2="12"/>
-                        </svg>
-                        Agregar Link
-                    </button>
-                </div>
-            </div>
-            <!-- BANNER REORDER VARIOS -->
             <div class="reorder-banner" id="reorderBanner-varios">
                 <div class="reorder-banner-info">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1213,10 +1117,11 @@
                 varios: document.getElementById('variosContainer')
             },
             nav: {
-                home: document.getElementById('navHome'),
+                logo: document.getElementById('logoIcon'),
+                reorderBtn: document.getElementById('navReorderBtn'),
+                addBtn: document.getElementById('navAddBtn'),
                 hamburger: document.getElementById('hamburgerBtn'),
-                menu: document.getElementById('menuDropdown'),
-                logo: document.getElementById('logoIcon')
+                menu: document.getElementById('menuDropdown')
             },
             form: {
                 element: document.getElementById('linkForm'),
@@ -1343,26 +1248,23 @@
         // EVENT LISTENERS
         // ============================================
         function setupEventListeners() {
-            elements.nav.home.addEventListener('click', () => { resetForm(); switchView('home'); });
+            // Flecha retroceso
             elements.nav.logo.addEventListener('click', () => {
-                // Si estamos en el formulario, volver al último catálogo visitado
-                if (currentView === 'home') {
-                    switchView(lastCatalogView);
-                } else {
-                    // Si estamos en una vista de catálogo, ir al form/inicio no tiene sentido
-                    // así que simplemente ir a axl como fallback
-                    switchView('axl');
-                }
-            });
-            elements.nav.logo.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    if (currentView === 'home') switchView(lastCatalogView);
-                    else switchView('axl');
-                }
+                if (currentView === 'home') switchView(lastCatalogView);
+                else switchView('axl');
             });
 
-            // Menú hamburguesa/flecha
+            // Botón reordenar del nav — actúa sobre la vista actual
+            elements.nav.reorderBtn.addEventListener('click', () => {
+                if (currentView !== 'home') toggleReorderMode(currentView);
+            });
+
+            // Botón añadir del nav — abre formulario con la categoría activa
+            elements.nav.addBtn.addEventListener('click', () => {
+                openFormForCategory(currentView !== 'home' ? currentView : lastCatalogView);
+            });
+
+            // Menú hamburguesa
             elements.nav.hamburger.addEventListener('click', (e) => {
                 e.stopPropagation();
                 elements.nav.hamburger.classList.toggle('active');
@@ -1383,23 +1285,6 @@
                     switchView(view);
                     elements.nav.hamburger.classList.remove('active');
                     elements.nav.menu.classList.remove('active');
-                }
-            });
-
-            document.addEventListener('click', (e) => {
-                const addBtn = e.target.closest('.btn-add');
-                if (addBtn) {
-                    const category = addBtn.getAttribute('data-category');
-                    openFormForCategory(category);
-                }
-            });
-
-            // Botones de reorden
-            document.addEventListener('click', (e) => {
-                const reorderBtn = e.target.closest('.btn-reorder');
-                if (reorderBtn) {
-                    const category = reorderBtn.getAttribute('data-category');
-                    toggleReorderMode(category);
                 }
             });
 
@@ -1439,19 +1324,21 @@
         // ============================================
         function switchView(view) {
             currentView = view;
-            // Guardar el último catálogo visitado para poder retroceder desde el formulario
             if (view !== 'home') lastCatalogView = view;
             Object.values(elements.views).forEach(v => v.classList.remove('active'));
-            elements.nav.home.classList.remove('active');
             document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
 
             if (view === 'home') {
                 elements.views.home.classList.add('active');
-                elements.nav.home.classList.add('active');
+                // Ocultar reorder en formulario
+                elements.nav.reorderBtn.style.display = 'none';
             } else {
                 elements.views[view].classList.add('active');
                 const menuItem = document.querySelector(`[data-view="${view}"]`);
                 if (menuItem) menuItem.classList.add('active');
+                // Mostrar reorder y sincronizar su estado activo
+                elements.nav.reorderBtn.style.display = 'flex';
+                elements.nav.reorderBtn.classList.toggle('active', !!reorderState[view]);
             }
         }
 
@@ -1783,11 +1670,11 @@
         function toggleReorderMode(category) {
             reorderState[category] = !reorderState[category];
 
-            const btn = document.getElementById(`reorderBtn-${category}`);
             const banner = document.getElementById(`reorderBanner-${category}`);
             const grid = document.getElementById(`grid-${category}`);
 
-            btn.classList.toggle('active', reorderState[category]);
+            // Sincronizar botón del nav
+            elements.nav.reorderBtn.classList.toggle('active', reorderState[category]);
             banner.classList.toggle('active', reorderState[category]);
 
             if (grid) {
@@ -1819,9 +1706,8 @@
 
             // Desactivar modo reorder sin guardar
             reorderState[category] = false;
-            const btn = document.getElementById(`reorderBtn-${category}`);
+            elements.nav.reorderBtn.classList.remove('active');
             const banner = document.getElementById(`reorderBanner-${category}`);
-            btn.classList.remove('active');
             banner.classList.remove('active');
             grid.classList.remove('reorder-mode');
 

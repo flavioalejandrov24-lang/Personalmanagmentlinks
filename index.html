@@ -374,6 +374,13 @@
 
         .btn-secondary:hover { background: #374151; }
 
+        .btn-cancel {
+            background: rgba(239, 68, 68, 0.85);
+            color: white;
+        }
+
+        .btn-cancel:hover { background: #ef4444; }
+
         /* ============================================ */
         /* CATALOG HEADER */
         /* ============================================ */
@@ -534,9 +541,9 @@
         /* SKELETON LOADING */
         /* ============================================ */
         .skeleton-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.875rem;
             padding: 0 1rem;
         }
 
@@ -545,24 +552,32 @@
             border-radius: 1rem;
             overflow: hidden;
             border: 1px solid #1f2937;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .skeleton-card-body {
+            display: flex;
+            flex-direction: row;
+            min-height: 110px;
         }
 
         .skeleton-img {
-            height: 12rem;
+            width: 110px;
+            min-width: 110px;
             background: linear-gradient(90deg, #1f2937 25%, #2d3748 50%, #1f2937 75%);
             background-size: 200% 100%;
             animation: shimmer 1.5s infinite;
         }
 
-        .skeleton-content { padding: 1.25rem; }
+        .skeleton-content { padding: 0.875rem 1rem; flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 0.5rem; }
 
         .skeleton-line {
-            height: 14px;
+            height: 12px;
             border-radius: 4px;
             background: linear-gradient(90deg, #1f2937 25%, #2d3748 50%, #1f2937 75%);
             background-size: 200% 100%;
             animation: shimmer 1.5s infinite;
-            margin-bottom: 1rem;
         }
 
         .skeleton-line.short { width: 60%; }
@@ -570,14 +585,11 @@
         .skeleton-actions {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 0.5rem;
-            padding-top: 1.25rem;
             border-top: 1px solid #1f2937;
         }
 
         .skeleton-btn {
-            height: 42px;
-            border-radius: 12px;
+            height: 36px;
             background: linear-gradient(90deg, #1f2937 25%, #2d3748 50%, #1f2937 75%);
             background-size: 200% 100%;
             animation: shimmer 1.5s infinite;
@@ -592,14 +604,14 @@
         /* GRID DE LINKS */
         /* ============================================ */
         .links-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.875rem;
             padding: 0 1rem;
         }
 
         /* ============================================ */
-        /* CARDS */
+        /* CARDS — estilo rectangular horizontal        */
         /* ============================================ */
         .link-card {
             background: #1a1a1a;
@@ -607,9 +619,19 @@
             overflow: hidden;
             border: 1px solid #1f2937;
             transition: border-color 0.3s, box-shadow 0.3s;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
             position: relative;
             user-select: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Zona superior: imagen izq + info der */
+        .link-card-body {
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            min-height: 110px;
         }
 
         .link-card:hover { border-color: rgba(234, 88, 12, 0.5); }
@@ -658,11 +680,14 @@
 
         .links-grid.reorder-mode .drag-handle { display: flex; }
 
+        /* Imagen — lado izquierdo, ancho fijo */
         .link-image {
             position: relative;
-            height: 12rem;
+            width: 110px;
+            min-width: 110px;
             overflow: hidden;
-            background: black;
+            background: #111;
+            flex-shrink: 0;
         }
 
         .link-card img.card-img {
@@ -687,96 +712,108 @@
 
         .img-skeleton.hidden { opacity: 0; pointer-events: none; }
 
+        /* Info — lado derecho */
         .link-content {
-            padding: 1.25rem;
+            padding: 0.875rem 1rem;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            justify-content: center;
+            flex: 1;
+            min-width: 0;
+            gap: 0.2rem;
         }
 
         .link-title {
-            font-weight: 700;
+            font-weight: 900;
             color: #f3f4f6;
-            font-size: 1rem;
-            margin-bottom: 1.25rem;
-            text-align: center;
-            width: 100%;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            font-style: italic;
         }
 
+        .link-category-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #ea580c;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .link-url-display {
+            font-size: 0.7rem;
+            color: #6b7280;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 0.1rem;
+        }
+
+        /* Botones — fila inferior de la card */
         .link-actions {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 0.5rem;
+            gap: 0;
             width: 100%;
-            padding-top: 1.25rem;
             border-top: 1px solid #1f2937;
         }
 
-        .link-actions.no-title {
-            border-top: none;
-            padding-top: 0;
-        }
+        .link-actions.no-title { border-top: 1px solid #1f2937; }
 
         .links-grid.reorder-mode .link-actions { pointer-events: none; opacity: 0.4; }
 
         .action-btn {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
             justify-content: center;
-            gap: 0.25rem;
-            padding: 0.625rem;
-            border-radius: 12px;
-            border: 1px solid;
+            gap: 0.375rem;
+            padding: 0.6rem 0.5rem;
+            border-radius: 0;
+            border: none;
+            border-right: 1px solid #1f2937;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 0.625rem;
+            font-size: 0.7rem;
             font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: -0.025em;
+            letter-spacing: 0.02em;
         }
 
-        .action-btn svg { width: 16px; height: 16px; }
+        .action-btn:last-child { border-right: none; }
+        .action-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
 
         .action-link {
-            background: rgba(34, 197, 94, 0.2);
+            background: rgba(34, 197, 94, 0.12);
             color: #22c55e;
-            border-color: rgba(34, 197, 94, 0.2);
             text-decoration: none;
         }
 
         .action-link:hover {
             background: #22c55e;
             color: white;
-            border-color: #4ade80;
         }
 
         .action-edit {
-            background: rgba(59, 130, 246, 0.2);
+            background: rgba(59, 130, 246, 0.12);
             color: #3b82f6;
-            border-color: rgba(59, 130, 246, 0.2);
         }
 
         .action-edit:hover {
             background: #3b82f6;
             color: white;
-            border-color: #60a5fa;
         }
 
         .action-delete {
-            background: rgba(239, 68, 68, 0.2);
+            background: rgba(239, 68, 68, 0.12);
             color: #ef4444;
-            border-color: rgba(239, 68, 68, 0.2);
         }
 
         .action-delete:hover {
             background: #ef4444;
             color: white;
-            border-color: #f87171;
         }
 
         /* ============================================ */
@@ -845,13 +882,16 @@
         @media (max-width: 640px) {
             .nav-title { display: none; }
             .nav-btn span { display: none; }
-            .links-grid { grid-template-columns: 1fr; }
-            .skeleton-grid { grid-template-columns: 1fr; }
 
             .menu-dropdown {
                 right: 1rem;
                 left: 1rem;
                 min-width: auto;
+            }
+
+            .link-image {
+                width: 90px;
+                min-width: 90px;
             }
         }
     </style>
@@ -977,7 +1017,7 @@
                             </svg>
                             <span id="btnSubmitText">Guardar</span>
                         </button>
-                        <button type="button" class="btn btn-secondary" id="btnCancel">Cancelar</button>
+                        <button type="button" class="btn btn-cancel" id="btnCancel">Cancelar</button>
                     </div>
                 </form>
             </div>
@@ -1114,6 +1154,7 @@
         let currentImageFile = null;
         let currentImageUrl = null;
         let currentView = 'axl';
+        let lastCatalogView = 'axl'; // Último catálogo visitado (para retroceso y cancelar)
 
         const reorderState = { axl: false, frecuentes: false, varios: false };
 
@@ -1181,14 +1222,18 @@
             for (let i = 0; i < count; i++) {
                 skeletonEl.innerHTML += `
                     <div class="skeleton-card">
-                        <div class="skeleton-img"></div>
-                        <div class="skeleton-content">
-                            <div class="skeleton-line short"></div>
-                            <div class="skeleton-actions">
-                                <div class="skeleton-btn"></div>
-                                <div class="skeleton-btn"></div>
-                                <div class="skeleton-btn"></div>
+                        <div class="skeleton-card-body">
+                            <div class="skeleton-img"></div>
+                            <div class="skeleton-content">
+                                <div class="skeleton-line" style="width:70%"></div>
+                                <div class="skeleton-line short"></div>
+                                <div class="skeleton-line" style="width:85%"></div>
                             </div>
+                        </div>
+                        <div class="skeleton-actions">
+                            <div class="skeleton-btn"></div>
+                            <div class="skeleton-btn"></div>
+                            <div class="skeleton-btn"></div>
                         </div>
                     </div>`;
             }
@@ -1260,9 +1305,22 @@
         // ============================================
         function setupEventListeners() {
             elements.nav.home.addEventListener('click', () => { resetForm(); switchView('home'); });
-            elements.nav.logo.addEventListener('click', () => window.history.back());
+            elements.nav.logo.addEventListener('click', () => {
+                // Si estamos en el formulario, volver al último catálogo visitado
+                if (currentView === 'home') {
+                    switchView(lastCatalogView);
+                } else {
+                    // Si estamos en una vista de catálogo, ir al form/inicio no tiene sentido
+                    // así que simplemente ir a axl como fallback
+                    switchView('axl');
+                }
+            });
             elements.nav.logo.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.history.back(); }
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    if (currentView === 'home') switchView(lastCatalogView);
+                    else switchView('axl');
+                }
             });
 
             // Menú hamburguesa/flecha
@@ -1324,7 +1382,7 @@
                 }
             });
 
-            elements.form.cancel.addEventListener('click', () => { resetForm(); switchView(currentView); });
+            elements.form.cancel.addEventListener('click', () => { resetForm(); switchView(lastCatalogView); });
 
             elements.image.upload.addEventListener('click', (e) => {
                 if (e.target !== elements.image.removeBtn && !elements.image.removeBtn.contains(e.target)) {
@@ -1342,6 +1400,8 @@
         // ============================================
         function switchView(view) {
             currentView = view;
+            // Guardar el último catálogo visitado para poder retroceder desde el formulario
+            if (view !== 'home') lastCatalogView = view;
             Object.values(elements.views).forEach(v => v.classList.remove('active'));
             elements.nav.home.classList.remove('active');
             document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
@@ -1461,6 +1521,13 @@
             card.setAttribute('data-id', link.id);
             card.setAttribute('draggable', 'true');
 
+            const categoryLabels = { axl: 'Catálogo Axl', frecuentes: 'Links Frecuentes', varios: 'Varios Links' };
+            const categoryLabel = categoryLabels[category] || category;
+
+            // Truncar URL para mostrar
+            let displayUrl = link.url || '';
+            try { displayUrl = new URL(link.url).hostname; } catch(e) {}
+
             card.innerHTML = `
                 <div class="drag-handle">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -1472,42 +1539,46 @@
                         <circle cx="15" cy="19" r="1" fill="currentColor"/>
                     </svg>
                 </div>
-                <div class="link-image">
-                    <div class="img-skeleton"></div>
-                    <img
-                        class="card-img"
-                        data-src="${link.image_url}"
-                        src=""
-                        alt="${link.title || 'Link'}"
-                        loading="lazy"
-                    >
-                </div>
-                <div class="link-content">
-                    ${link.title ? `<h3 class="link-title">${link.title}</h3>` : ''}
-                    <div class="link-actions ${!link.title ? 'no-title' : ''}">
-                        <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="action-btn action-link">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                                <polyline points="15 3 21 3 21 9"/>
-                                <line x1="10" y1="14" x2="21" y2="3"/>
-                            </svg>
-                            Link
-                        </a>
-                        <button class="action-btn action-edit" data-action="edit" data-id="${link.id}" data-category="${category}">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                            </svg>
-                            Editar
-                        </button>
-                        <button class="action-btn action-delete" data-action="delete" data-id="${link.id}" data-category="${category}">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="3 6 5 6 21 6"/>
-                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                            </svg>
-                            Borrar
-                        </button>
+                <div class="link-card-body">
+                    <div class="link-image">
+                        <div class="img-skeleton"></div>
+                        <img
+                            class="card-img"
+                            data-src="${link.image_url}"
+                            src=""
+                            alt="${link.title || 'Link'}"
+                            loading="lazy"
+                        >
                     </div>
+                    <div class="link-content">
+                        ${link.title ? `<h3 class="link-title">${link.title}</h3>` : ''}
+                        <span class="link-category-badge">${categoryLabel}</span>
+                        <span class="link-url-display">${displayUrl}</span>
+                    </div>
+                </div>
+                <div class="link-actions">
+                    <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="action-btn action-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                        Link
+                    </a>
+                    <button class="action-btn action-edit" data-action="edit" data-id="${link.id}" data-category="${category}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                        </svg>
+                        Editar
+                    </button>
+                    <button class="action-btn action-delete" data-action="delete" data-id="${link.id}" data-category="${category}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                        Borrar
+                    </button>
                 </div>
             `;
 

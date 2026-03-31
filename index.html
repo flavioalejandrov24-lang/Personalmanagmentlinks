@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Links Administrator</title>
     <link rel="icon" type="image/png" href="linkicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="manifest" href="https://progressier.app/naMhh0eBROHiI9F341OS/progressier.json"/>
     <script defer src="https://progressier.app/naMhh0eBROHiI9F341OS/script.js"></script>
@@ -57,14 +60,16 @@
         }
 
         .nav-segment-title {
-            font-size: 0.78rem;
-            font-weight: 800;
-            color: #fb923c99;
+            font-family: 'Rajdhani', -apple-system, sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #f97316;
             text-transform: uppercase;
-            letter-spacing: 0.12em;
+            letter-spacing: 0.18em;
             white-space: nowrap;
             pointer-events: none;
             user-select: none;
+            text-shadow: 0 0 18px rgba(249, 115, 22, 0.45);
         }
 
         /* Grupo derecho: reorder + add + hamburger */
@@ -569,7 +574,7 @@
         .links-grid {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.1rem;
             padding: 0 1rem;
         }
 
@@ -580,9 +585,9 @@
             background: #1a1a1a;
             border-radius: 1rem;
             overflow: hidden;
-            border: 1px solid #1f2937;
+            border: 1.5px solid #2a2a2a;
             transition: border-color 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45), 0 0 0 0 rgba(234, 88, 12, 0);
             position: relative;
             user-select: none;
             display: flex;
@@ -597,7 +602,10 @@
             min-height: 88px;
         }
 
-        .link-card:hover { border-color: rgba(234, 88, 12, 0.5); }
+        .link-card:hover {
+            border-color: rgba(234, 88, 12, 0.6);
+            box-shadow: 0 4px 18px rgba(0,0,0,0.45), 0 0 14px rgba(234, 88, 12, 0.18);
+        }
 
         /* Modo reorder */
         .links-grid.reorder-mode .link-card {
@@ -1385,12 +1393,14 @@
                 elements.views.todos.classList.add('active');
                 const menuItem = document.querySelector(`[data-view="todos"]`);
                 if (menuItem) menuItem.classList.add('active');
-                elements.nav.reorderBtn.style.display = 'none'; // Todo Links no tiene reorder propio
+                // En Todo Links ocultamos reorder (no aplica en vista mezclada)
+                elements.nav.reorderBtn.style.display = 'none';
                 renderTodosView();
             } else {
                 elements.views[view].classList.add('active');
                 const menuItem = document.querySelector(`[data-view="${view}"]`);
                 if (menuItem) menuItem.classList.add('active');
+                // Mostrar reorder en axl, frecuentes y varios
                 elements.nav.reorderBtn.style.display = 'flex';
                 elements.nav.reorderBtn.classList.toggle('active', !!reorderState[view]);
             }
